@@ -29,12 +29,18 @@ html { min-height: 100%; background: #e8e9e5; }
 body {
   min-height: 100%;
   margin: 0;
+  overscroll-behavior-y: none;
   background: #e8e9e5;
   color: var(--ink);
   font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
   font-size: 16px;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Installed on iOS the shell fills the display, so the letterbox tone would only leak into the safe areas. */
+@media (display-mode: standalone) {
+  html, body { background: var(--bg); }
 }
 button, input { font: inherit; }
 button { color: inherit; cursor: pointer; touch-action: manipulation; }
@@ -186,7 +192,8 @@ h3 { font-size: .95rem; line-height: 1.5; }
 }
 .search-icon { position: relative; width: 14px; height: 14px; border: 2px solid rgb(244 243 238 / 72%); border-radius: 50%; }
 .search-icon::after { position: absolute; right: -5px; bottom: -3px; width: 6px; height: 2px; content: ""; background: rgb(244 243 238 / 72%); transform: rotate(45deg); }
-.search-input-shell input { min-width: 0; min-height: 54px; border: 0; outline: none; background: transparent; color: var(--bg); font-size: .82rem; }
+/* 16px keeps iOS Safari from zooming the viewport when the field takes focus. */
+.search-input-shell input { min-width: 0; min-height: 54px; border: 0; outline: none; background: transparent; color: var(--bg); font-size: 16px; }
 .search-input-shell input::placeholder { color: rgb(244 243 238 / 65%); }
 .search-submit { display: grid; width: 30px; height: 30px; padding: 0; place-items: center; border: 0; border-radius: 50%; background: rgb(244 243 238 / 16%); }
 .search-submit:hover { background: rgb(244 243 238 / 28%); }
