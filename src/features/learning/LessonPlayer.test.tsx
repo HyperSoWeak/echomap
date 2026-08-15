@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { DEMO_NODES } from "./demo-data";
 import { LessonPlayer } from "./LessonPlayer";
-import type { Course } from "./types";
+import type { Course, QuestionRecord } from "./types";
 
 function courseAt(seconds: number): Course {
   return {
@@ -16,6 +16,29 @@ function courseAt(seconds: number): Course {
     conceptQuestionCounts: {},
     questionRecords: [],
     remedialNodeAdded: false,
+  };
+}
+
+function stuckCourse(): Course {
+  const questions: QuestionRecord[] = ["question-1", "question-2"].map((id) => ({
+    id,
+    transcript: "什麼是 AI Agent？",
+    conceptId: "ai-agent",
+    playbackPositionSeconds: 12,
+    plainAnswer: "AI Agent 會依目標採取多步驟行動。",
+    exampleAnswer: "像旅行助理會查資料再調整行程。",
+    selectedAnswer: "AI Agent 會依目標採取多步驟行動。",
+    answerStyle: "plain",
+    createdAt: "2026-08-15T00:00:00.000Z",
+  }));
+
+  return {
+    ...courseAt(20),
+    conceptQuestionCounts: { "ai-agent": 2 },
+    questionRecords: questions,
+    nodes: DEMO_NODES.map((node) =>
+      node.conceptId === "ai-agent" ? { ...node, status: "stuck" } : node,
+    ),
   };
 }
 
@@ -65,5 +88,12 @@ describe("LessonPlayer", () => {
       type: "episodeProgressed",
       seconds: 30,
     });
+  });
+
+  it("prompts to open a new node after two questions on the same concept", () => {
+    render(<LessonPlayer course={stuckCourse()} dispatch={vi.fn()} />);
+
+    expect(screen.getByText("這個概念需要補強")).toBeVisible();
+    expect(screen.getByRole("button", { name: "開啟補強節點" })).toBeVisible();
   });
 });

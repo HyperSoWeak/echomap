@@ -328,6 +328,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
 .map-node-circle { position: relative; display: block; width: 56px; height: 56px; border: 1px solid var(--dim); border-radius: 50%; background: var(--dim); box-shadow: 0 0 0 5px var(--surface); transition: transform 160ms var(--ease); }
 .map-node:hover .map-node-circle { transform: scale(1.05); }
 .map-node-learned .map-node-circle { border-color: var(--accent); background: var(--accent); }
+.map-node-visited .map-node-circle { border-color: var(--accent-light); background: var(--accent-soft); }
 .map-node-stuck .map-node-circle { border: 3px solid var(--accent); background: var(--accent-soft); }
 .map-node-remedial .map-node-circle { border: 2px dashed var(--accent-ink); background: var(--accent-soft); }
 .map-node-circle::after {
@@ -348,6 +349,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
   transform: translateX(-50%);
 }
 .map-node-learned .map-node-circle::after { border-color: var(--accent-ink); background: var(--accent-ink); color: #fff; }
+.map-node-visited .map-node-circle::after { border-color: var(--accent); background: var(--accent); color: #fff; }
 .map-node[data-concept="ai-agent"] .map-node-circle::before {
   position: absolute;
   inset: -8px;
@@ -363,6 +365,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
 .map-legend { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 12px; color: var(--muted); font-size: .68rem; }
 .map-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 50%; vertical-align: -1px; }
 .legend-learned { background: var(--accent); }
+.legend-visited { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent-light); }
 .legend-stuck { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent); }
 .legend-unlearned { background: var(--dim); }
 .map-insight { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding: 13px 14px; border: 1px solid var(--accent); border-radius: 13px; background: var(--accent-soft); color: var(--accent-ink); font-size: .76rem; }

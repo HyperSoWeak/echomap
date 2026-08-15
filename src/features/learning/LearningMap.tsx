@@ -3,7 +3,7 @@ import { AppHeader } from "./AppHeader";
 import { PRIMARY_CONCEPT_ID } from "./demo-data";
 import type { AppAction, Course } from "./types";
 
-const labels = { learned: "已完成", unlearned: "未學習", stuck: "卡住" } as const;
+const labels = { learned: "已完成", visited: "已點過", unlearned: "未學習", stuck: "卡住" } as const;
 
 export function LearningMap({ course, dispatch }: { course: Course; dispatch: Dispatch<AppAction> }) {
   return (
@@ -29,14 +29,14 @@ export function LearningMap({ course, dispatch }: { course: Course; dispatch: Di
                   className={"map-node map-node-" + node.status + (node.kind === "remedial" ? " map-node-remedial" : "")}
                   data-concept={node.conceptId}
                   aria-label={node.title + " 節點，" + labels[node.status]}
-                  onClick={() => node.conceptId === PRIMARY_CONCEPT_ID ? dispatch({ type: "nodeOpened" }) : undefined}
+                  onClick={() => node.conceptId === PRIMARY_CONCEPT_ID ? dispatch({ type: "nodeOpened", conceptId: node.conceptId }) : undefined}
                 >
                   <span className="map-node-circle" aria-hidden="true" />
                   <span className="map-node-copy"><strong>{node.title}</strong><small>{node.kind === "remedial" ? "新增補強" : labels[node.status]}</small></span>
                 </button>
               ))}
             </nav>
-            <div className="map-legend"><span><i className="legend-learned" />懂了</span><span><i className="legend-stuck" />卡過</span><span><i className="legend-unlearned" />還沒學</span></div>
+            <div className="map-legend"><span><i className="legend-learned" />懂了</span><span><i className="legend-visited" />點過</span><span><i className="legend-stuck" />卡過</span><span><i className="legend-unlearned" />還沒學</span></div>
             {course.questionRecords.length ? <div className="map-insight"><b>{course.questionRecords.length}</b><p>你的提問正在改變這張地圖。</p></div> : null}
           </div>
         </div>

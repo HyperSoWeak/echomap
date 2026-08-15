@@ -101,6 +101,20 @@ describe("learningReducer", () => {
     expect(state.screen).toBe("map");
   });
 
+  it("marks a clicked node visited before opening it", () => {
+    const state = learningReducer(createMapState(), {
+      type: "nodeOpened",
+      conceptId: "ai-agent",
+    });
+
+    expect(state.screen).toBe("node");
+    expect(
+      selectActiveCourse(state)?.nodes.find(
+        (node) => node.conceptId === "ai-agent",
+      )?.status,
+    ).toBe("visited");
+  });
+
   it("marks a concept stuck only on its second question", () => {
     let state = createMapState();
     state = learningReducer(state, {

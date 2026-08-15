@@ -107,7 +107,20 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
     }
 
     case "nodeOpened":
-      return selectActiveCourse(state) ? { ...state, screen: "node" } : state;
+      if (!selectActiveCourse(state)) {
+        return state;
+      }
+      return updateActiveCourse(
+        { ...state, screen: "node" },
+        (course) => ({
+          ...course,
+          nodes: course.nodes.map((node) =>
+            node.conceptId === action.conceptId && node.status === "unlearned"
+              ? { ...node, status: "visited" }
+              : node,
+          ),
+        }),
+      );
 
     case "lessonOpened":
       return selectActiveCourse(state) ? { ...state, screen: "lesson" } : state;

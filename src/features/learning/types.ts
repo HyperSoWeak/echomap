@@ -1,6 +1,6 @@
 export type Screen = "library" | "followUp" | "map" | "node" | "lesson";
 
-export type NodeStatus = "unlearned" | "learned" | "stuck";
+export type NodeStatus = "unlearned" | "visited" | "learned" | "stuck";
 
 export interface LearningNode {
   id: string;
@@ -54,7 +54,7 @@ export type AppAction =
   | { type: "followUpAnswered"; value: string }
   | { type: "followUpBack" }
   | { type: "followUpCompleted" }
-  | { type: "nodeOpened" }
+  | { type: "nodeOpened"; conceptId: string }
   | { type: "lessonOpened" }
   | { type: "episodeProgressed"; seconds: number }
   | { type: "questionAnswered"; record: QuestionRecord }

@@ -3,6 +3,7 @@
 .next/
 .superpowers/
 .worktrees/
+.claude/
 node_modules/
 coverage/
 playwright-report/
