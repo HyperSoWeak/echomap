@@ -372,12 +372,40 @@ h3 { font-size: .95rem; line-height: 1.5; }
 .map-insight b { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border-radius: 50%; background: var(--accent); color: white; }
 
 /* Node detail */
-.node-heading h1 { display: flex; align-items: center; gap: 9px; }
-.node-tag { padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: .62rem; font-weight: 800; }
-.node-stats { margin-bottom: 4px; }
-.concept-graph-card { margin-top: 18px; padding: 16px 14px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--raise); }
-.concept-graph-title { margin-bottom: 14px; color: var(--muted); font-size: .74rem; }
-.concept-graph { position: relative; height: 190px; }
+.node-screen { display: grid; gap: 16px; }
+.node-summary {
+  padding: 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: var(--surface);
+}
+.node-summary-main {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+}
+.node-summary h1 {
+  margin: 0 0 6px;
+  color: var(--accent-ink);
+  font-size: clamp(1.7rem, 9vw, 2.6rem);
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+.node-summary .support-copy { max-width: 30ch; }
+.node-summary-meta { margin-top: 14px; color: var(--muted); font-size: .72rem; font-weight: 800; }
+.node-primary-action { width: auto; min-width: 128px; gap: 8px; margin: 0; }
+.node-action-icon { width: 17px; height: 17px; }
+.concept-graph-card, .episode-section {
+  padding: 16px 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--raise);
+}
+.node-section-heading { display: flex; align-items: start; justify-content: space-between; gap: 14px; }
+.node-section-heading h2 { margin: 2px 0 0; color: var(--accent-ink); font-size: 1rem; }
+.concept-graph { position: relative; height: 230px; margin-top: 12px; border-radius: 15px; background: var(--surface); }
 .concept-graph-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .concept-graph-lines line { stroke: var(--line-strong); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
 .concept-node { position: absolute; display: grid; justify-items: center; gap: 6px; width: 64px; padding: 0; border: 0; background: transparent; transform: translate(-50%, -50%); text-align: center; }
@@ -390,21 +418,22 @@ h3 { font-size: .95rem; line-height: 1.5; }
 .concept-node-locked .concept-node-circle { border-color: var(--dim); background: var(--dim); }
 .concept-node-selected .concept-node-circle { box-shadow: 0 0 0 4px var(--accent-soft); }
 .concept-node-selected small { color: var(--accent-ink); }
-.episode-section { margin-top: 26px; }
-.episode-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
-.episode-section-heading h2 { margin-bottom: 0; }
-.episode-section-heading .text-action { min-height: auto; margin: 0; color: var(--accent-ink); }
-.episode-scroll { display: flex; gap: 12px; margin: 0 -20px; padding: 2px 20px 10px; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
-.episode-tile { display: grid; flex: 0 0 auto; width: 168px; gap: 4px; padding: 12px; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--surface); scroll-snap-align: start; text-align: left; transition: border-color 160ms ease, transform 160ms var(--ease); }
+.episode-section .text-action { min-height: auto; margin: 0; color: var(--accent-ink); }
+.episode-scroll { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+.episode-tile { display: grid; grid-template-columns: 36px 1fr; gap: 4px 12px; min-height: 82px; padding: 12px; border: 1px solid var(--line-strong); border-radius: 15px; background: var(--surface); text-align: left; transition: border-color 160ms ease, transform 160ms var(--ease); }
 .episode-tile:hover { border-color: var(--accent); transform: translateY(-1px); }
-.episode-tile-thumb { display: grid; width: 100%; height: 74px; margin-bottom: 4px; place-items: center; border-radius: 10px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); color: #fff; font-family: "Zen Tokyo Zoo", sans-serif; font-size: 1.6rem; }
-.episode-tile strong { color: var(--accent-ink); font-size: .8rem; }
-.episode-tile p { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--muted); font-size: .68rem; line-height: 1.5; }
-.episode-tile-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+.episode-tile .episode-number { grid-row: span 3; color: var(--faint); font-size: .74rem; font-weight: 900; letter-spacing: .08em; }
+.episode-tile strong { color: var(--accent-ink); font-size: .82rem; }
+.episode-tile p { color: var(--muted); font-size: .7rem; line-height: 1.5; }
+.episode-tile-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
 .episode-duration { display: flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: .64rem; font-weight: 800; }
 .episode-meta-icon { width: 12px; height: 12px; flex: 0 0 auto; }
-.episode-like { display: grid; width: 18px; height: 18px; place-items: center; color: var(--dim); }
-.episode-like-active { color: var(--danger); }
+.episode-complete-icon { width: 16px; height: 16px; color: var(--accent); }
+
+@media (max-width: 540px) {
+  .node-summary-main { display: grid; align-items: start; }
+  .node-primary-action { width: 100%; }
+}
 
 /* Lesson and player */
 .lesson-heading { margin-bottom: 20px; }
