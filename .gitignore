@@ -1,0 +1,9 @@
+.env
+.env.local
+.next/
+.superpowers/
+node_modules/
+coverage/
+playwright-report/
+test-results/
+*.log
