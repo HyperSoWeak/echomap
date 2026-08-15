@@ -1,0 +1,149 @@
+AI Agent 核心概念 Roadmap
+
+說明：每一行「A <- B」代表「學 A 之前，要先學 B」。括號中的代號可供程式建立概念節點與連線。
+
+【第一層：基本角色與邊界】
+人工智慧模型（ai-model）
+  <- 輸入與輸出（input-output）
+  <- 指令（instruction）
+
+大型語言模型（llm）
+  <- 人工智慧模型（ai-model）
+  <- 文字脈絡（context）
+
+AI Agent（ai-agent）
+  <- 大型語言模型（llm）
+  <- 目標（goal）
+  <- 環境（environment）
+  <- 行動（action）
+
+Agent 循環（agent-loop）
+  <- AI Agent（ai-agent）
+  <- 觀察（observation）
+  <- 決策（decision）
+  <- 行動（action）
+
+自主程度（autonomy-level）
+  <- AI Agent（ai-agent）
+  <- 權限（permission）
+  <- 風險（risk）
+
+【第二層：理解與規劃任務】
+目標澄清（goal-clarification）
+  <- 目標（goal）
+  <- 限制條件（constraint）
+  <- 完成條件（success-criteria）
+
+任務分解（task-decomposition）
+  <- 目標澄清（goal-clarification）
+  <- 子任務（subtask）
+  <- 依賴關係（dependency）
+
+計畫（planning）
+  <- 任務分解（task-decomposition）
+  <- 優先順序（priority）
+  <- 資源（resource）
+
+重新規劃（replanning）
+  <- 計畫（planning）
+  <- 執行結果（execution-result）
+  <- 錯誤處理（error-handling）
+
+【第三層：工具、資料與記憶】
+工具（tool）
+  <- 輸入與輸出（input-output）
+  <- 權限（permission）
+
+工具選擇（tool-selection）
+  <- 工具（tool）
+  <- 目標澄清（goal-clarification）
+  <- 工具能力（tool-capability）
+
+工具呼叫（tool-call）
+  <- 工具選擇（tool-selection）
+  <- 參數（parameter）
+  <- 執行結果（execution-result）
+
+工作記憶（working-memory）
+  <- 文字脈絡（context）
+  <- 相關資訊（relevant-information）
+
+長期記憶（long-term-memory）
+  <- 工作記憶（working-memory）
+  <- 儲存政策（retention-policy）
+  <- 隱私（privacy）
+
+資料來源（data-source）
+  <- 工具（tool）
+  <- 來源可信度（source-reliability）
+
+【第四層：檢查與可靠性】
+不確定性（uncertainty）
+  <- 資料不足（missing-information）
+  <- 模型限制（model-limitation）
+
+事實驗證（fact-checking）
+  <- 資料來源（data-source）
+  <- 來源可信度（source-reliability）
+  <- 不確定性（uncertainty）
+
+結果驗證（result-validation）
+  <- 完成條件（success-criteria）
+  <- 執行結果（execution-result）
+  <- 事實驗證（fact-checking）
+
+錯誤處理（error-handling）
+  <- 執行結果（execution-result）
+  <- 不確定性（uncertainty）
+  <- 安全替代方案（safe-alternative）
+
+可觀察性（observability）
+  <- 行動紀錄（action-log）
+  <- 執行結果（execution-result）
+  <- 錯誤處理（error-handling）
+
+【第五層：安全與人機協作】
+最小權限（least-privilege）
+  <- 權限（permission）
+  <- 風險（risk）
+
+提示注入風險（prompt-injection-risk）
+  <- 指令（instruction）
+  <- 外部內容（external-content）
+  <- 資料與指令分離（data-instruction-separation）
+
+人類確認（human-approval）
+  <- 風險（risk）
+  <- 可逆性（reversibility）
+  <- 自主程度（autonomy-level）
+
+升級處理（human-escalation）
+  <- 不確定性（uncertainty）
+  <- 錯誤處理（error-handling）
+  <- 人類確認（human-approval）
+
+安全 AI Agent（safe-agent）
+  <- Agent 循環（agent-loop）
+  <- 計畫（planning）
+  <- 工具呼叫（tool-call）
+  <- 結果驗證（result-validation）
+  <- 最小權限（least-privilege）
+  <- 提示注入風險（prompt-injection-risk）
+  <- 人類確認（human-approval）
+
+完整 Agent 工作流程（agent-workflow）
+  <- 目標澄清（goal-clarification）
+  <- 任務分解（task-decomposition）
+  <- 安全 AI Agent（safe-agent）
+  <- 可觀察性（observability）
+  <- 升級處理（human-escalation）
+
+【建議學習順序】
+1. 模型、Agent 與自動化腳本的差異
+2. 目標、限制條件與完成條件
+3. 任務分解、依賴關係與計畫
+4. 工具選擇、工具呼叫與結果讀取
+5. 工作記憶、長期記憶與隱私
+6. 事實驗證、結果驗證與錯誤處理
+7. 最小權限、提示注入與人類確認
+8. 整合一個安全、可追蹤的 Agent 工作流程

@@ -1,5 +1,10 @@
 import { type Dispatch, useRef, useState } from "react";
-import { DEMO_CONCEPT_IDS, FALLBACK_ANSWERS, SUGGESTED_QUESTIONS } from "./demo-data";
+import {
+  DEMO_CONCEPT_IDS,
+  FALLBACK_ANSWERS,
+  PRIMARY_CONCEPT_ID,
+  SUGGESTED_QUESTIONS,
+} from "./demo-data";
 import type { AppAction, Course, QuestionRecord } from "./types";
 
 type VoicePhase = "idle" | "recording" | "transcribing" | "answering" | "speaking" | "error";
@@ -72,9 +77,9 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
       if (response.ok) {
         result = (await response.json()) as AnswerResult;
       } else {
-        const repeated = (course.conceptQuestionCounts["agent-loop"] ?? 0) > 0;
+        const repeated = (course.conceptQuestionCounts[PRIMARY_CONCEPT_ID] ?? 0) > 0;
         result = {
-          conceptId: "agent-loop",
+          conceptId: PRIMARY_CONCEPT_ID,
           plainAnswer: FALLBACK_ANSWERS.plain,
           exampleAnswer: FALLBACK_ANSWERS.example,
           selectedAnswer: repeated ? FALLBACK_ANSWERS.example : FALLBACK_ANSWERS.plain,

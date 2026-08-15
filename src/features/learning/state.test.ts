@@ -9,7 +9,13 @@ import type { AppState, QuestionRecord } from "./types";
 
 const createdAt = "2026-08-15T00:00:00.000Z";
 
-const FOLLOW_UP_REPLIES = ["完全沒接觸", "工作專案", "能自己動手", "15 分鐘"];
+const FOLLOW_UP_REPLIES = [
+  "Agent 能為目標規劃並執行多個步驟",
+  "使用可靠的天氣工具取得資料",
+  "顯示內容並取得確認",
+  "辨認錯誤、嘗試安全替代方案或請求協助",
+  "資料蒐集與摘要助理",
+];
 
 function createCourseState(): AppState {
   return learningReducer(createInitialState(), {
@@ -32,7 +38,7 @@ function questionRecord(id: string): QuestionRecord {
   return {
     id,
     transcript: "什麼是 AI Agent？",
-    conceptId: "agent-loop",
+    conceptId: "ai-agent",
     playbackPositionSeconds: 18,
     plainAnswer: "AI Agent 會觀察環境後採取行動。",
     exampleAnswer: "像掃地機器人感測牆壁後轉向。",
@@ -101,12 +107,12 @@ describe("learningReducer", () => {
       type: "questionAnswered",
       record: questionRecord("question-1"),
     });
-    expect(selectActiveCourse(state)?.conceptQuestionCounts["agent-loop"]).toBe(
+    expect(selectActiveCourse(state)?.conceptQuestionCounts["ai-agent"]).toBe(
       1,
     );
     expect(
       selectActiveCourse(state)?.nodes.find(
-        (node) => node.conceptId === "agent-loop",
+        (node) => node.conceptId === "ai-agent",
       )?.status,
     ).toBe("unlearned");
 
@@ -114,12 +120,12 @@ describe("learningReducer", () => {
       type: "questionAnswered",
       record: questionRecord("question-2"),
     });
-    expect(selectActiveCourse(state)?.conceptQuestionCounts["agent-loop"]).toBe(
+    expect(selectActiveCourse(state)?.conceptQuestionCounts["ai-agent"]).toBe(
       2,
     );
     expect(
       selectActiveCourse(state)?.nodes.find(
-        (node) => node.conceptId === "agent-loop",
+        (node) => node.conceptId === "ai-agent",
       )?.status,
     ).toBe("stuck");
     expect(selectActiveCourse(state)?.questionRecords).toHaveLength(2);
@@ -140,12 +146,12 @@ describe("learningReducer", () => {
 
     const course = selectActiveCourse(state);
     const parentIndex = course?.nodes.findIndex(
-      (node) => node.conceptId === "agent-loop",
+      (node) => node.conceptId === "ai-agent",
     );
     expect(course?.remedialNodeAdded).toBe(true);
-    expect(course?.nodes[parentIndex! + 1].id).toBe("agent-loop-remedial");
+    expect(course?.nodes[parentIndex! + 1].id).toBe("ai-agent-remedial");
     expect(
-      course?.nodes.filter((node) => node.id === "agent-loop-remedial"),
+      course?.nodes.filter((node) => node.id === "ai-agent-remedial"),
     ).toHaveLength(1);
   });
 
@@ -163,7 +169,7 @@ describe("learningReducer", () => {
 
     expect(
       selectActiveCourse(state)?.nodes.find(
-        (node) => node.conceptId === "agent-loop",
+        (node) => node.conceptId === "ai-agent",
       )?.status,
     ).toBe("stuck");
   });

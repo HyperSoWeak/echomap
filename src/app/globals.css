@@ -332,7 +332,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
   transform: translateX(-50%);
 }
 .map-node-learned .map-node-circle::after { border-color: var(--accent-ink); background: var(--accent-ink); color: #fff; }
-.map-node[data-concept="agent-loop"] .map-node-circle::before {
+.map-node[data-concept="ai-agent"] .map-node-circle::before {
   position: absolute;
   inset: -8px;
   content: "";

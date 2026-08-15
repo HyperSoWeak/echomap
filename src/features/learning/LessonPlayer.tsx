@@ -58,8 +58,8 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
     <>
       <AppHeader backLabel="返回學習地圖" onBack={() => dispatch({ type: "navigateBack" })} />
       <section className="screen lesson-screen">
-        <p className="prequiz-eyebrow">AI Agent / Episode 01</p>
-        <div className="lesson-heading"><p className="eyebrow">Now learning</p><h1>AI Agent</h1><p className="support-copy">理解觀察、決策、行動的循環</p></div>
+        <p className="prequiz-eyebrow">AI Agent 核心概念 / Episode 01</p>
+        <div className="lesson-heading"><p className="eyebrow">Now learning</p><h1>AI Agent</h1><p className="support-copy">理解模型回答和 Agent 完成任務的差異</p></div>
 
         <article className="episode-card">
           <span className="episode-thumb" aria-hidden="true">1</span>

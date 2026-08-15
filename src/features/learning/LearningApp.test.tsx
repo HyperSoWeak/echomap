@@ -54,7 +54,7 @@ describe("LearningApp onboarding", () => {
 
     expect(screen.getByText("正在理解你的目標")).toBeVisible();
     expect(
-      await screen.findByText("先確認起點", {}, { timeout: 3000 }),
+      await screen.findByText("概念檢查", {}, { timeout: 3000 }),
     ).toBeVisible();
     expect(screen.getByText("「自主機器人」")).toBeVisible();
   });
@@ -64,10 +64,11 @@ describe("LearningApp onboarding", () => {
     render(<LearningApp initialState={courseAtFollowUp()} />);
 
     for (const option of [
-      "完全沒接觸",
-      "工作專案",
-      "能自己動手",
-      "15 分鐘",
+      "Agent 能為目標規劃並執行多個步驟",
+      "使用可靠的天氣工具取得資料",
+      "顯示內容並取得確認",
+      "辨認錯誤、嘗試安全替代方案或請求協助",
+      "資料蒐集與摘要助理",
     ]) {
       await user.click(screen.getByRole("button", { name: option }));
     }
@@ -87,7 +88,7 @@ describe("LearningApp onboarding", () => {
     expect(screen.getByText("量子力學")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "開啟量子力學" }));
 
-    expect(await screen.findByText("先確認起點")).toBeVisible();
+    expect(await screen.findByText("概念檢查")).toBeVisible();
   });
 
   it("restores a versioned course library after hydration", async () => {
