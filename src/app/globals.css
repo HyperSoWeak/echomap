@@ -96,7 +96,14 @@ h3 { font-size: .95rem; line-height: 1.5; }
   justify-content: space-between;
   gap: 12px;
   padding: max(12px, env(safe-area-inset-top)) 18px 12px;
-  background: rgb(103 174 168 / 20%);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgb(38 48 47 / 7%);
+  transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+.app-header-hidden {
+  transform: translateY(-100%);
+  box-shadow: none;
 }
 .brand-lockup { display: flex; min-width: 0; align-items: center; gap: 12px; }
 .brand-mark {
@@ -120,7 +127,10 @@ h3 { font-size: .95rem; line-height: 1.5; }
 }
 .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 .header-back-action, .header-text-action {
+  display: inline-flex;
   min-height: 42px;
+  align-items: center;
+  gap: 5px;
   padding: 0 7px;
   border: 0;
   background: transparent;
@@ -128,8 +138,11 @@ h3 { font-size: .95rem; line-height: 1.5; }
   font-size: .72rem;
   font-weight: 800;
 }
-.header-back-action { display: flex; align-items: center; gap: 5px; }
-.header-back-action span { font-size: 1.05rem; }
+.header-action-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
 
 /* Home */
 .home-hero { display: flex; flex-direction: column; align-items: center; padding: 20px 0 38px; text-align: center; }

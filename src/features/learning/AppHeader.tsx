@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 interface AppHeaderProps {
   backLabel?: string;
   onBack?: () => void;
@@ -5,8 +9,20 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ backLabel, onBack, onReset }: AppHeaderProps) {
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    function updateVisibility() {
+      setIsHidden(window.scrollY > 8);
+    }
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
   return (
-    <header className="app-header">
+    <header className={"app-header" + (isHidden ? " app-header-hidden" : "")}>
       <div className="brand-lockup">
         <span className="brand-mark" aria-hidden="true">
           <svg className="brand-mark-glyph" viewBox="0 0 46 46" fill="none">
@@ -21,11 +37,20 @@ export function AppHeader({ backLabel, onBack, onReset }: AppHeaderProps) {
       <div className="header-actions">
         {onBack ? (
           <button className="header-back-action" type="button" onClick={onBack}>
-            <span aria-hidden="true">←</span>{backLabel ?? "返回"}
+            <svg className="header-action-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>{backLabel ?? "返回"}</span>
           </button>
         ) : null}
         {onReset ? (
-          <button className="header-text-action" type="button" onClick={onReset}>重新開始</button>
+          <button className="header-text-action" type="button" onClick={onReset}>
+            <svg className="header-action-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M15.2 9.2a5.2 5.2 0 1 0-1.4 3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M15.2 5.5v3.7h-3.7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>重新開始</span>
+          </button>
         ) : null}
       </div>
     </header>
