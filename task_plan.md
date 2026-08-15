@@ -6,7 +6,7 @@
 
 ## Current Phase
 
-Phase 1
+Phase 2
 
 ## Phases
 
@@ -14,15 +14,15 @@ Phase 1
 
 - [x] 確認使用者需求、Figma workflow 與 MVP 邊界
 - [x] 建立逐步 implementation plan
-- [ ] 建立 Next.js、TypeScript、pnpm 與測試基礎
-- **Status:** in_progress
+- [x] 建立 Next.js、TypeScript、pnpm 與測試基礎
+- **Status:** complete
 
 ### Phase 2: Domain State & Guided Flow
 
 - [ ] 以 TDD 建立 course reducer、固定 demo dataset 與 versioned localStorage
 - [ ] 實作課程列表、新增課程與五步前測
 - [ ] 實作學習地圖、節目播放器、筆記與補救節點流程
-- **Status:** pending
+- **Status:** in_progress
 
 ### Phase 3: Real AI Voice Q&A
 
@@ -73,6 +73,10 @@ Phase 1
 
 | Error | Attempt | Resolution |
 |-------|---------|------------|
+| pnpm 11 blocked `unrs-resolver` build script | 1 | Add the locked native resolver to `pnpm.onlyBuiltDependencies`, then reinstall |
+| pnpm 11 ignored legacy package.json build allowlist | 2 | Use `pnpm-workspace.yaml` `allowBuilds`, the v11 configuration location |
+| Planning log patch used an English sentence that did not match its zh-TW source | 1 | Locate the exact text with `rg` and patch the existing line |
+| ESLint 10 and TypeScript 7 exceeded transitive plugin peer ranges | 1 | Pin latest supported majors: ESLint 9.39.5 and TypeScript 6.0.3 |
 
 ## Notes
 

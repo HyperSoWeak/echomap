@@ -19,6 +19,9 @@
 - Railway GitHub repo 連線與權限授權是一次性 dashboard 操作，無法由 repository 檔案單獨完成。
 - 2026-08-15 registry versions: Next.js `16.3.1`, React `19.2.8`, OpenAI SDK `7.4.0`, Zod `4.4.3`, Vitest `4.1.10`, Playwright `1.62.1`。
 - Tooling registry versions: TypeScript `7.0.2`, ESLint `10.8.1`, `eslint-config-next` `16.3.1`, Testing Library React `16.3.2`, jsdom `30.0.1`；實際 lockfile 由 pnpm resolution 固定。
+- 本機 pnpm 是 `11.3.0`；專案以 `packageManager` 固定此版本。Docker 使用 Node 24，因此型別固定於 `@types/node` 24.x，而不是 registry 最新的 26.x。
+- `eslint-config-next@16.3.1` 本身接受較新工具，但其 bundled plugins 目前要求 ESLint 9 與 TypeScript `<6.1`；因此固定相容的 ESLint `9.39.5` 與 TypeScript `6.0.3`。
+- pnpm 11 的 non-registry project settings 放在 `pnpm-workspace.yaml`；build allowlist 已改為 `allowBuilds` map，舊版 `onlyBuiltDependencies` 已移除。
 
 ## Technical Decisions
 
@@ -35,6 +38,9 @@
 
 | Issue | Resolution |
 |-------|------------|
+| `pnpm install` emitted `ERR_PNPM_IGNORED_BUILDS` for `unrs-resolver` | Explicitly allow only that transitive native package through `pnpm-workspace.yaml` `allowBuilds` |
+| Planning-log patch context did not match the existing zh-TW sentence | Located exact source text with `rg` and reapplied a narrow patch |
+| `pnpm peers check` rejected ESLint 10 and TypeScript 7 | Pin the newest versions accepted by the transitive Next.js lint plugins |
 
 ## Resources
 
@@ -45,6 +51,7 @@
 - OpenAI text-to-speech guide: https://developers.openai.com/api/docs/guides/text-to-speech
 - Railway Dockerfile docs: https://docs.railway.com/builds/dockerfiles
 - Railway GitHub autodeploy docs: https://docs.railway.com/deployments/github-autodeploys
+- pnpm 11 build settings: https://pnpm.io/settings/build
 
 ## Visual/Browser Findings
 

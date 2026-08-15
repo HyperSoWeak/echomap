@@ -54,7 +54,7 @@
 - Create: **src/app/globals.css**
 - Test: **src/app/page.test.tsx**
 
-- [ ] **Step 1: Write a failing smoke test**
+- [x] **Step 1: Write a failing smoke test**
 
 ~~~tsx
 import { render, screen } from "@testing-library/react";
@@ -66,7 +66,7 @@ it("renders the learning application entry", () => {
 });
 ~~~
 
-- [ ] **Step 2: Install dependencies and verify the test fails**
+- [x] **Step 2: Install dependencies and verify the test fails**
 
 Run:
 
@@ -77,7 +77,7 @@ pnpm test:run src/app/page.test.tsx
 
 Expected: FAIL because **src/app/page.tsx** does not exist.
 
-- [ ] **Step 3: Add strict project configuration and the minimum page**
+- [x] **Step 3: Add strict project configuration and the minimum page**
 
 Use scripts:
 
@@ -120,7 +120,7 @@ export default function Home() {
 }
 ~~~
 
-- [ ] **Step 4: Run the scaffold checks**
+- [x] **Step 4: Run the scaffold checks**
 
 Run:
 
@@ -132,7 +132,7 @@ pnpm lint
 
 Expected: all commands exit 0.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ~~~bash
 git add package.json pnpm-lock.yaml next.config.ts tsconfig.json next-env.d.ts eslint.config.mjs vitest.config.ts vitest.setup.ts playwright.config.ts src/app
@@ -989,4 +989,3 @@ Update **task_plan.md** phases to complete, list test commands and outputs in **
 git add task_plan.md findings.md progress.md
 git commit -m "docs: record implementation verification"
 ~~~
-
