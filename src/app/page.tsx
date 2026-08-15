@@ -1,7 +1,9 @@
+import { LearningApp } from "@/features/learning/LearningApp";
+
 export default function Home() {
   return (
-    <main aria-label="Learn Audio Map">
-      <h1>Learn Audio Map</h1>
+    <main className="app-shell" aria-label="Learn Audio Map">
+      <LearningApp />
     </main>
   );
 }

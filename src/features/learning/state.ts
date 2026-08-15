@@ -53,6 +53,9 @@ function createCourse(
 
 export function learningReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case "hydrated":
+      return action.state;
+
     case "courseCreated":
       return {
         courses: [
@@ -85,6 +88,12 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
           preQuizAnswers: [...course.preQuizAnswers, action.value],
         };
       });
+
+    case "preQuizBack":
+      return updateActiveCourse(state, (course) => ({
+        ...course,
+        preQuizAnswers: course.preQuizAnswers.slice(0, -1),
+      }));
 
     case "preQuizCompleted": {
       const course = selectActiveCourse(state);

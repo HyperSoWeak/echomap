@@ -43,6 +43,7 @@ export interface AppState {
 }
 
 export type AppAction =
+  | { type: "hydrated"; state: AppState }
   | {
       type: "courseCreated";
       id: string;
@@ -51,6 +52,7 @@ export type AppAction =
     }
   | { type: "courseSelected"; id: string }
   | { type: "preQuizAnswered"; value: string }
+  | { type: "preQuizBack" }
   | { type: "preQuizCompleted" }
   | { type: "lessonOpened" }
   | { type: "episodeProgressed"; seconds: number }
