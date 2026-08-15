@@ -149,7 +149,7 @@ git commit -m "build: scaffold next application"
 - Test: **src/features/learning/state.test.ts**
 - Test: **src/features/learning/storage.test.ts**
 
-- [ ] **Step 1: Write reducer tests for every product transition**
+- [x] **Step 1: Write reducer tests for every product transition**
 
 Define tests using these public functions:
 
@@ -218,7 +218,7 @@ it("discards an unsupported schema version", () => {
 });
 ~~~
 
-- [ ] **Step 2: Run tests and confirm missing modules fail**
+- [x] **Step 2: Run tests and confirm missing modules fail**
 
 Run:
 
@@ -228,7 +228,7 @@ pnpm test:run src/features/learning/state.test.ts src/features/learning/storage.
 
 Expected: FAIL with unresolved **state** and **storage** modules.
 
-- [ ] **Step 3: Implement fixed data, reducer, selectors, and storage**
+- [x] **Step 3: Implement fixed data, reducer, selectors, and storage**
 
 Define:
 
@@ -275,7 +275,7 @@ interface StoredState {
 }
 ~~~
 
-- [ ] **Step 4: Run reducer and storage tests**
+- [x] **Step 4: Run reducer and storage tests**
 
 Run:
 
@@ -285,7 +285,7 @@ pnpm test:run src/features/learning/state.test.ts src/features/learning/storage.
 
 Expected: all state transition and storage-version tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ~~~bash
 git add src/features/learning

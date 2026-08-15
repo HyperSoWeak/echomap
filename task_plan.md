@@ -19,7 +19,7 @@ Phase 2
 
 ### Phase 2: Domain State & Guided Flow
 
-- [ ] 以 TDD 建立 course reducer、固定 demo dataset 與 versioned localStorage
+- [x] 以 TDD 建立 course reducer、固定 demo dataset 與 versioned localStorage
 - [ ] 實作課程列表、新增課程與五步前測
 - [ ] 實作學習地圖、節目播放器、筆記與補救節點流程
 - **Status:** in_progress
@@ -77,6 +77,9 @@ Phase 2
 | pnpm 11 ignored legacy package.json build allowlist | 2 | Use `pnpm-workspace.yaml` `allowBuilds`, the v11 configuration location |
 | Planning log patch used an English sentence that did not match its zh-TW source | 1 | Locate the exact text with `rg` and patch the existing line |
 | ESLint 10 and TypeScript 7 exceeded transitive plugin peer ranges | 1 | Pin latest supported majors: ESLint 9.39.5 and TypeScript 6.0.3 |
+| Storage tests resolved bare `localStorage` to Node 24's incomplete web-storage global | 1 | Investigate global vs jsdom window before changing the test boundary |
+| Using `window.localStorage` still resolved the Vitest global in Node 25 | 2 | Override the test global with Vitest's internal `jsdom.window.localStorage` during setup |
+| Progress patch used non-matching or overlapping context | 1–2 | Split plan and progress changes, then patch exact phase blocks |
 
 ## Notes
 

@@ -22,6 +22,8 @@
 - 本機 pnpm 是 `11.3.0`；專案以 `packageManager` 固定此版本。Docker 使用 Node 24，因此型別固定於 `@types/node` 24.x，而不是 registry 最新的 26.x。
 - `eslint-config-next@16.3.1` 本身接受較新工具，但其 bundled plugins 目前要求 ESLint 9 與 TypeScript `<6.1`；因此固定相容的 ESLint `9.39.5` 與 TypeScript `6.0.3`。
 - pnpm 11 的 non-registry project settings 放在 `pnpm-workspace.yaml`；build allowlist 已改為 `allowBuilds` map，舊版 `onlyBuiltDependencies` 已移除。
+- The local runtime is Node `25.9.0`, which exposes a configurable global `localStorage`; without a configured file it emits a warning and lacks jsdom Storage methods.
+- Vitest 4.1.10's jsdom `populateGlobal` only overwrites pre-existing globals listed in its `LIVING_KEYS` / `OTHER_KEYS`. `localStorage` is not listed, and Vitest sets `window = global`, so Node 25's incomplete storage shadows jsdom storage even through `window.localStorage`.
 
 ## Technical Decisions
 
@@ -41,6 +43,7 @@
 | `pnpm install` emitted `ERR_PNPM_IGNORED_BUILDS` for `unrs-resolver` | Explicitly allow only that transitive native package through `pnpm-workspace.yaml` `allowBuilds` |
 | Planning-log patch context did not match the existing zh-TW sentence | Located exact source text with `rg` and reapplied a narrow patch |
 | `pnpm peers check` rejected ESLint 10 and TypeScript 7 | Pin the newest versions accepted by the transitive Next.js lint plugins |
+| Storage tests failed before reaching production functions because Node 25 storage shadowed jsdom | Bind the test global to Vitest's exposed `jsdom.window.localStorage` in `vitest.setup.ts` |
 
 ## Resources
 
