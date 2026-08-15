@@ -13,7 +13,7 @@ export function LearningMap({ course, dispatch }: { course: Course; dispatch: Di
           <p className="prequiz-eyebrow">Generated Map</p>
           <div className="prequiz-card map-card">
             <p className="eyebrow">我的個人學習路徑</p>
-            <h1>{course.title}</h1>
+            <h1>{course.prompt}</h1>
             <p className="support-copy">點選 AI Agent，開始第一集聲音課程。</p>
             <div className="topic-stats">
               <span>知識節點 <b>{course.nodes.length}</b></span>

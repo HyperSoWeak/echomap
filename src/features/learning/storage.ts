@@ -1,9 +1,9 @@
 import type { AppState, Screen } from "./types";
 
-export const STORAGE_VERSION = 1;
+export const STORAGE_VERSION = 2;
 export const STORAGE_KEY = "learn-audio-map:v1";
 
-const SCREENS: Screen[] = ["library", "preQuiz", "map", "lesson"];
+const SCREENS: Screen[] = ["library", "followUp", "map", "lesson"];
 
 function isAppState(value: unknown): value is AppState {
   if (!value || typeof value !== "object") {

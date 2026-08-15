@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { FOLLOW_UP_QUESTIONS } from "./demo-data";
 import {
   createInitialState,
   learningReducer,
@@ -8,21 +9,23 @@ import type { AppState, QuestionRecord } from "./types";
 
 const createdAt = "2026-08-15T00:00:00.000Z";
 
+const FOLLOW_UP_REPLIES = ["完全沒接觸", "工作專案", "能自己動手", "15 分鐘"];
+
 function createCourseState(): AppState {
   return learningReducer(createInitialState(), {
     type: "courseCreated",
     id: "course-1",
-    title: "自主機器人",
+    prompt: "自主機器人",
     createdAt,
   });
 }
 
 function createMapState(): AppState {
   let state = createCourseState();
-  for (const value of ["大學生", "AI", "Podcast", "理解概念", "15 分鐘"]) {
-    state = learningReducer(state, { type: "preQuizAnswered", value });
+  for (const value of FOLLOW_UP_REPLIES) {
+    state = learningReducer(state, { type: "followUpAnswered", value });
   }
-  return learningReducer(state, { type: "preQuizCompleted" });
+  return learningReducer(state, { type: "followUpCompleted" });
 }
 
 function questionRecord(id: string): QuestionRecord {
@@ -51,16 +54,16 @@ describe("learningReducer", () => {
     });
   });
 
-  it("creates separate courses with the typed titles and fixed demo nodes", () => {
+  it("creates separate courses with the typed prompts and the prepared nodes", () => {
     const first = createCourseState();
     const second = learningReducer(first, {
       type: "courseCreated",
       id: "course-2",
-      title: "量子力學",
+      prompt: "量子力學",
       createdAt: "2026-08-15T00:01:00.000Z",
     });
 
-    expect(second.courses.map((course) => course.title)).toEqual([
+    expect(second.courses.map((course) => course.prompt)).toEqual([
       "自主機器人",
       "量子力學",
     ]);
@@ -68,17 +71,27 @@ describe("learningReducer", () => {
       second.courses[1].nodes.map((node) => node.conceptId),
     );
     expect(second.activeCourseId).toBe("course-2");
-    expect(second.screen).toBe("preQuiz");
+    expect(second.screen).toBe("followUp");
   });
 
-  it("requires exactly five pre-quiz answers before opening the map", () => {
+  it("keeps the map closed until every follow-up is answered", () => {
     let state = createCourseState();
-    for (const value of ["大學生", "AI", "Podcast", "理解概念", "15 分鐘"]) {
-      state = learningReducer(state, { type: "preQuizAnswered", value });
+    for (const value of FOLLOW_UP_REPLIES.slice(0, -1)) {
+      state = learningReducer(state, { type: "followUpAnswered", value });
     }
-    expect(selectActiveCourse(state)?.preQuizAnswers).toHaveLength(5);
+    expect(learningReducer(state, { type: "followUpCompleted" }).screen).toBe(
+      "followUp",
+    );
 
-    state = learningReducer(state, { type: "preQuizCompleted" });
+    state = learningReducer(state, {
+      type: "followUpAnswered",
+      value: FOLLOW_UP_REPLIES.at(-1)!,
+    });
+    expect(selectActiveCourse(state)?.followUpAnswers).toHaveLength(
+      FOLLOW_UP_QUESTIONS.length,
+    );
+
+    state = learningReducer(state, { type: "followUpCompleted" });
     expect(state.screen).toBe("map");
   });
 

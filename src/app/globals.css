@@ -179,24 +179,50 @@ h3 { font-size: .95rem; line-height: 1.5; }
   border-radius: 22px;
   background: var(--raise);
 }
-.topic-search-form { margin-bottom: 22px; }
-.search-input-shell {
-  display: grid;
-  min-height: 54px;
-  grid-template-columns: 18px minmax(0, 1fr) 30px;
-  align-items: center;
-  gap: 9px;
-  padding: 0 12px;
-  border-radius: 16px;
-  background: var(--accent-ink);
-}
-.search-icon { position: relative; width: 14px; height: 14px; border: 2px solid rgb(244 243 238 / 72%); border-radius: 50%; }
-.search-icon::after { position: absolute; right: -5px; bottom: -3px; width: 6px; height: 2px; content: ""; background: rgb(244 243 238 / 72%); transform: rotate(45deg); }
+.prompt-form { margin-bottom: 22px; }
+.prompt-label { display: block; margin: 0 0 8px 3px; color: var(--accent-ink); font-size: .8rem; font-weight: 800; }
+.prompt-shell { padding: 12px; border-radius: 16px; background: var(--accent-ink); }
 /* 16px keeps iOS Safari from zooming the viewport when the field takes focus. */
-.search-input-shell input { min-width: 0; min-height: 54px; border: 0; outline: none; background: transparent; color: var(--bg); font-size: 16px; }
-.search-input-shell input::placeholder { color: rgb(244 243 238 / 65%); }
-.search-submit { display: grid; width: 30px; height: 30px; padding: 0; place-items: center; border: 0; border-radius: 50%; background: rgb(244 243 238 / 16%); }
-.search-submit:hover { background: rgb(244 243 238 / 28%); }
+.prompt-shell textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--bg);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  resize: none;
+}
+.prompt-shell textarea::placeholder { color: rgb(244 243 238 / 65%); }
+.prompt-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.prompt-count { color: rgb(244 243 238 / 55%); font-size: .68rem; font-variant-numeric: tabular-nums; }
+.prompt-submit {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: .74rem;
+  font-weight: 800;
+}
+.prompt-submit:hover { background: var(--accent-light); }
+.prompt-echo {
+  margin: 0 3px 13px;
+  padding: 9px 12px;
+  border-left: 2px solid var(--accent);
+  background: var(--raise);
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.6;
+}
 .field-help { margin: 8px 2px 0; color: var(--muted); font-size: .72rem; }
 .field-error { margin: 8px 2px 0; color: var(--danger); font-size: .75rem; font-weight: 700; }
 .section-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 14px; margin-bottom: 15px; }
@@ -219,7 +245,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
   transition: border-color 160ms ease, transform 160ms var(--ease);
 }
 .course-card:hover { border-color: var(--accent); transform: translateY(-1px); }
-.course-card h2 { margin: 2px 0 3px; }
+.course-card h2 { display: -webkit-box; overflow: hidden; margin: 2px 0 3px; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .course-card p:last-child { color: var(--muted); font-size: .76rem; }
 .course-index { align-self: start; color: var(--faint); font-size: .67rem; font-weight: 800; }
 .course-open { display: grid; width: 42px; height: 42px; padding: 0; place-items: center; border: 1px solid var(--accent); border-radius: 50%; background: var(--accent-soft); }
@@ -261,7 +287,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
 /* Map */
 .map-flow { max-width: 450px; }
 .map-card { padding: 24px 20px; }
-.map-card > h1 { margin: 3px 0 3px; color: var(--accent-ink); }
+.map-card > h1 { margin: 3px 0 3px; color: var(--accent-ink); font-size: 1.35rem; }
 .topic-stats { display: flex; flex-wrap: wrap; gap: 8px 15px; margin: 20px 0 8px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--raise); color: var(--muted); font-size: .7rem; }
 .topic-stats b { margin-left: 3px; color: var(--accent-ink); font-size: 1.05rem; font-weight: 800; }
 .learning-path { position: relative; display: grid; gap: 17px; margin-top: 19px; padding: 5px 3px 15px; }
@@ -353,6 +379,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
   .header-brand { font-size: .9rem; }
   .header-back-action, .header-text-action { font-size: .65rem; }
   .discovery-card, .prequiz-card { padding-inline: 14px; }
+  .prompt-footer { flex-wrap: wrap; }
   .quiz-options { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,4 @@
-export type Screen = "library" | "preQuiz" | "map" | "lesson";
+export type Screen = "library" | "followUp" | "map" | "lesson";
 
 export type NodeStatus = "unlearned" | "learned" | "stuck";
 
@@ -26,9 +26,9 @@ export interface QuestionRecord {
 
 export interface Course {
   id: string;
-  title: string;
+  prompt: string;
   createdAt: string;
-  preQuizAnswers: string[];
+  followUpAnswers: string[];
   nodes: LearningNode[];
   episodeProgressSeconds: number;
   conceptQuestionCounts: Record<string, number>;
@@ -47,13 +47,13 @@ export type AppAction =
   | {
       type: "courseCreated";
       id: string;
-      title: string;
+      prompt: string;
       createdAt: string;
     }
   | { type: "courseSelected"; id: string }
-  | { type: "preQuizAnswered"; value: string }
-  | { type: "preQuizBack" }
-  | { type: "preQuizCompleted" }
+  | { type: "followUpAnswered"; value: string }
+  | { type: "followUpBack" }
+  | { type: "followUpCompleted" }
   | { type: "lessonOpened" }
   | { type: "episodeProgressed"; seconds: number }
   | { type: "questionAnswered"; record: QuestionRecord }
@@ -62,7 +62,7 @@ export type AppAction =
   | { type: "navigateBack" }
   | { type: "reset" };
 
-export interface QuizStep {
+export interface FollowUpQuestion {
   id: string;
   eyebrow: string;
   question: string;

@@ -2,9 +2,9 @@
 
 import { useEffect, useReducer, useState } from "react";
 import { CourseLibrary } from "./CourseLibrary";
+import { FollowUp } from "./FollowUp";
 import { LearningMap } from "./LearningMap";
 import { LessonPlayer } from "./LessonPlayer";
-import { PreQuiz } from "./PreQuiz";
 import { createInitialState, learningReducer, selectActiveCourse } from "./state";
 import { clearState, loadState, saveState } from "./storage";
 import type { AppState } from "./types";
@@ -36,16 +36,15 @@ export function LearningApp({ initialState }: { initialState?: AppState }) {
 
   if (!hydrated) return <section className="screen screen-centered"><div className="loading-node" /><p>讀取你的學習地圖⋯</p></section>;
 
-  if (state.screen === "preQuiz" && course) {
+  if (state.screen === "followUp" && course) {
     return (
-      <PreQuiz
-        answers={course.preQuizAnswers}
-        onBack={() => dispatch({ type: "preQuizBack" })}
+      <FollowUp
+        prompt={course.prompt}
+        answers={course.followUpAnswers}
+        onBack={() => dispatch({ type: "followUpBack" })}
         onExit={() => dispatch({ type: "navigateBack" })}
-        onAnswer={(value) => {
-          dispatch({ type: "preQuizAnswered", value });
-          if (course.preQuizAnswers.length === 4) dispatch({ type: "preQuizCompleted" });
-        }}
+        onAnswer={(value) => dispatch({ type: "followUpAnswered", value })}
+        onComplete={() => dispatch({ type: "followUpCompleted" })}
       />
     );
   }
@@ -55,7 +54,7 @@ export function LearningApp({ initialState }: { initialState?: AppState }) {
   return (
     <CourseLibrary
       courses={state.courses}
-      onCreate={(title) => dispatch({ type: "courseCreated", id: crypto.randomUUID(), title, createdAt: new Date().toISOString() })}
+      onCreate={(prompt) => dispatch({ type: "courseCreated", id: crypto.randomUUID(), prompt, createdAt: new Date().toISOString() })}
       onSelect={(id) => dispatch({ type: "courseSelected", id })}
       onReset={() => dispatch({ type: "reset" })}
     />

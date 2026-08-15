@@ -1,6 +1,7 @@
 import {
   DEMO_NODES,
   DEMO_REMEDIAL_NODE,
+  FOLLOW_UP_QUESTIONS,
   PRIMARY_CONCEPT_ID,
 } from "./demo-data";
 import type { AppAction, AppState, Course } from "./types";
@@ -35,14 +36,14 @@ function updateActiveCourse(
 
 function createCourse(
   id: string,
-  title: string,
+  prompt: string,
   createdAt: string,
 ): Course {
   return {
     id,
-    title,
+    prompt,
     createdAt,
-    preQuizAnswers: [],
+    followUpAnswers: [],
     nodes: DEMO_NODES.map((node) => ({ ...node })),
     episodeProgressSeconds: 0,
     conceptQuestionCounts: {},
@@ -60,10 +61,10 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
       return {
         courses: [
           ...state.courses,
-          createCourse(action.id, action.title, action.createdAt),
+          createCourse(action.id, action.prompt, action.createdAt),
         ],
         activeCourseId: action.id,
-        screen: "preQuiz",
+        screen: "followUp",
       };
 
     case "courseSelected": {
@@ -74,30 +75,33 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
       return {
         ...state,
         activeCourseId: course.id,
-        screen: course.preQuizAnswers.length === 5 ? "map" : "preQuiz",
+        screen:
+          course.followUpAnswers.length === FOLLOW_UP_QUESTIONS.length
+            ? "map"
+            : "followUp",
       };
     }
 
-    case "preQuizAnswered":
+    case "followUpAnswered":
       return updateActiveCourse(state, (course) => {
-        if (course.preQuizAnswers.length >= 5) {
+        if (course.followUpAnswers.length >= FOLLOW_UP_QUESTIONS.length) {
           return course;
         }
         return {
           ...course,
-          preQuizAnswers: [...course.preQuizAnswers, action.value],
+          followUpAnswers: [...course.followUpAnswers, action.value],
         };
       });
 
-    case "preQuizBack":
+    case "followUpBack":
       return updateActiveCourse(state, (course) => ({
         ...course,
-        preQuizAnswers: course.preQuizAnswers.slice(0, -1),
+        followUpAnswers: course.followUpAnswers.slice(0, -1),
       }));
 
-    case "preQuizCompleted": {
+    case "followUpCompleted": {
       const course = selectActiveCourse(state);
-      return course?.preQuizAnswers.length === 5
+      return course?.followUpAnswers.length === FOLLOW_UP_QUESTIONS.length
         ? { ...state, screen: "map" }
         : state;
     }
@@ -158,7 +162,7 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
       if (state.screen === "lesson") {
         return { ...state, screen: "map" };
       }
-      if (state.screen === "map" || state.screen === "preQuiz") {
+      if (state.screen === "map" || state.screen === "followUp") {
         return { ...state, activeCourseId: null, screen: "library" };
       }
       return state;

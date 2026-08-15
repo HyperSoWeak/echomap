@@ -1,4 +1,4 @@
-import type { LearningNode, QuizStep } from "./types";
+import type { FollowUpQuestion, LearningNode } from "./types";
 
 export const DEMO_CONCEPT_IDS = [
   "orientation",
@@ -88,39 +88,33 @@ export const DEMO_REMEDIAL_NODE: LearningNode = {
   kind: "remedial",
 };
 
-export const QUIZ_STEPS: QuizStep[] = [
+// Placeholder copy: these follow-ups stand in for the set a model will generate from the learner's prompt.
+export const FOLLOW_UP_QUESTIONS: FollowUpQuestion[] = [
   {
-    id: "identity",
-    eyebrow: "讓我們先認識你",
-    question: "哪一個身分最接近你？",
-    description: "我們會用這個答案調整解釋方式。",
-    options: ["大學生", "高中生", "自學者"],
+    id: "level",
+    eyebrow: "先確認起點",
+    question: "你對這個主題目前有多熟？",
+    description: "決定第一個節點要從哪裡切入。",
+    options: ["完全沒接觸", "看過一些", "已經動手做過"],
   },
   {
-    id: "interest",
-    eyebrow: "找到你的切入點",
-    question: "你最想先理解哪一類內容？",
-    description: "第一版會使用相同 demo 內容展示流程。",
-    options: ["AI 與機器人", "工程實作", "核心觀念"],
+    id: "purpose",
+    eyebrow: "確認用途",
+    question: "你想拿它來做什麼？",
+    description: "同一個主題，用途不同路徑就不同。",
+    options: ["考試或修課", "工作專案", "純粹好奇"],
   },
   {
-    id: "medium",
-    eyebrow: "選擇舒服的節奏",
-    question: "你偏好的學習媒介是？",
-    description: "課程會以聲音為主，搭配可視化地圖。",
-    options: ["Podcast", "圖像摘要", "問答互動"],
+    id: "depth",
+    eyebrow: "抓一下深度",
+    question: "你想學到什麼程度？",
+    description: "會影響節點數量與每集長度。",
+    options: ["先抓重點", "能自己動手", "連原理一起懂"],
   },
   {
-    id: "objective",
-    eyebrow: "設定今天的目標",
-    question: "這堂課最重要的成果是？",
-    description: "你的選擇會保存在這台裝置。",
-    options: ["理解概念", "能向別人解釋", "完成快速複習"],
-  },
-  {
-    id: "daily-time",
-    eyebrow: "安排學習時間",
-    question: "每天想投入多少時間？",
+    id: "pace",
+    eyebrow: "安排節奏",
+    question: "每天大概能投入多久？",
     description: "先從能持續的小步驟開始。",
     options: ["5 分鐘", "15 分鐘", "30 分鐘"],
   },
@@ -128,11 +122,11 @@ export const QUIZ_STEPS: QuizStep[] = [
 
 export const DEMO_EPISODE = {
   title: "Episode 01｜AI Agent 如何看見並回應世界",
-  description: "這是第一版的預先建立內容佔位符，用來展示聲音學習與即時提問流程。",
+  description: "第一版的預先建立內容，用來展示聲音學習與即時提問流程。",
   durationSeconds: 48,
   audioSrc: "/audio/demo-lesson.wav",
   transcript:
-    "這是一段 demo 課程內容。AI Agent 會先觀察環境，再根據目標選擇行動，最後利用結果修正下一次決策。",
+    "AI Agent 會先觀察環境，再根據目標選擇行動，最後利用結果修正下一次決策。",
 } as const;
 
 export const SUGGESTED_QUESTIONS = [

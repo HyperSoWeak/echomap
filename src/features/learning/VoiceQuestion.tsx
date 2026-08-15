@@ -63,7 +63,7 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           transcript: recognized,
-          courseTitle: course.title,
+          courseTitle: course.prompt,
           allowedConceptIds: DEMO_CONCEPT_IDS,
           conceptQuestionCounts: course.conceptQuestionCounts,
         }),
@@ -80,7 +80,7 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
           selectedAnswer: repeated ? FALLBACK_ANSWERS.example : FALLBACK_ANSWERS.plain,
           selectedStyle: repeated ? "example" : "plain",
         };
-        setMessage("AI 回答暫時無法連線，先顯示固定 demo 回答。");
+        setMessage("AI 回答暫時無法連線，先顯示預備好的回答。");
       }
       setAnswer(result.selectedAnswer);
       const record: QuestionRecord = {

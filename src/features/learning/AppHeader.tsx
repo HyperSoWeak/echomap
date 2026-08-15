@@ -18,7 +18,7 @@ export function AppHeader({ backLabel, onBack, onReset }: AppHeaderProps) {
           </button>
         ) : null}
         {onReset ? (
-          <button className="header-text-action" type="button" onClick={onReset}>重新 Demo</button>
+          <button className="header-text-action" type="button" onClick={onReset}>重新開始</button>
         ) : null}
       </div>
     </header>
