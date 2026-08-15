@@ -1,4 +1,5 @@
 import { type Dispatch, useState } from "react";
+import { Clock3, Heart, Play } from "lucide-react";
 import { AppHeader } from "./AppHeader";
 import { DEMO_CONCEPT_EPISODES, DEMO_CONCEPT_GRAPH, DEMO_EPISODES, PRIMARY_CONCEPT_ID } from "./demo-data";
 import type { AppAction, Course } from "./types";
@@ -72,8 +73,13 @@ export function NodeDetail({ course, dispatch }: { course: Course; dispatch: Dis
                 <strong>{episode.title}</strong>
                 <p>{episode.description}</p>
                 <div className="episode-tile-meta">
-                  <span className="episode-duration"><i aria-hidden="true">▶</i>{episode.durationMinutes} 分鐘</span>
-                  <span className={"episode-like" + (episode.completed ? " episode-like-active" : "")} aria-hidden="true">♥</span>
+                  <span className="episode-duration">
+                    <Clock3 className="episode-meta-icon" aria-hidden="true" />
+                    {episode.durationMinutes} 分鐘
+                  </span>
+                  <span className={"episode-like" + (episode.completed ? " episode-like-active" : "")} aria-hidden="true">
+                    {episode.completed ? <Heart className="episode-meta-icon" fill="currentColor" /> : <Play className="episode-meta-icon" />}
+                  </span>
                 </div>
               </button>
             ))}

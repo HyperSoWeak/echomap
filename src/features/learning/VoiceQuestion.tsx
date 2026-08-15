@@ -1,4 +1,5 @@
 import { type Dispatch, useRef, useState } from "react";
+import { Mic } from "lucide-react";
 import {
   DEMO_CONCEPT_IDS,
   FALLBACK_ANSWERS,
@@ -195,7 +196,7 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
         onPointerCancel={stopRecording}
         aria-label={phaseLabels[phase]}
       >
-        <span className="mic-symbol" aria-hidden="true" />
+        <Mic className="mic-icon" aria-hidden="true" />
         <span>{phaseLabels[phase]}</span>
       </button>
       <div className="suggested-questions">

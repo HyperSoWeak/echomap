@@ -1,4 +1,5 @@
 import { type Dispatch, useEffect, useRef, useState } from "react";
+import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { AppHeader } from "./AppHeader";
 import { DEMO_EPISODE } from "./demo-data";
 import { QuestionNotes } from "./QuestionNotes";
@@ -109,9 +110,18 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
           <div className="timeline"><span style={{ width: progress + "%" }} /></div>
           <div className="player-times"><span>{formatTime(course.episodeProgressSeconds)}</span><span>{formatTime(durationSeconds)}</span></div>
           <div className="transport">
-            <button className="transport-button" type="button" aria-label="上一段" onClick={() => seek(-10)}>−10</button>
-            <button className="play-button" type="button" onClick={isPlaying ? pause : play}><span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>{isPlaying ? "暫停" : "播放"}</button>
-            <button className="transport-button" type="button" aria-label="下一段" onClick={() => seek(10)}>+10</button>
+            <button className="transport-button" type="button" aria-label="上一段" onClick={() => seek(-10)}>
+              <Rewind className="transport-icon" aria-hidden="true" />
+              <span>10</span>
+            </button>
+            <button className="play-button" type="button" onClick={isPlaying ? pause : play}>
+              {isPlaying ? <Pause className="play-icon" aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
+              {isPlaying ? "暫停" : "播放"}
+            </button>
+            <button className="transport-button" type="button" aria-label="下一段" onClick={() => seek(10)}>
+              <FastForward className="transport-icon" aria-hidden="true" />
+              <span>10</span>
+            </button>
           </div>
           <button className="text-action" type="button" onClick={() => setShowTranscript((value) => !value)}>{showTranscript ? "收起文字稿" : "顯示文字稿"}</button>
           {showTranscript ? <p className="lesson-transcript">{DEMO_EPISODE.transcript}</p> : null}

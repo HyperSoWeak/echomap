@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { type FormEvent, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { AppHeader } from "./AppHeader";
 import type { Course } from "./types";
 
@@ -49,7 +49,7 @@ export function CourseLibrary({ courses, onCreate, onSelect, onReset }: CourseLi
           <div className="wordmark" aria-label="EchoMap">EchoMap</div>
           <p>讓 <strong>EchoMap</strong> 快速掌握你的學習方向與程度</p>
           <button className="hero-start" type="button" onClick={() => setShowComposer(true)}>
-            <span>新增課程</span><Image src="/icons/arrow-right.svg" alt="" width={18} height={18} />
+            <span>新增課程</span><ArrowRight className="button-icon" aria-hidden="true" />
           </button>
         </div>
 
@@ -76,7 +76,7 @@ export function CourseLibrary({ courses, onCreate, onSelect, onReset }: CourseLi
                 <div className="prompt-footer">
                   <span className="prompt-count">{prompt.length} / {PROMPT_MAX_LENGTH}</span>
                   <button className="prompt-submit" type="submit">
-                    <span>開始規劃</span><Image src="/icons/arrow-right.svg" alt="" width={16} height={16} />
+                    <span>開始規劃</span><ArrowRight className="button-icon" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export function CourseLibrary({ courses, onCreate, onSelect, onReset }: CourseLi
                     <p>{course.nodes.filter((node) => node.status === "learned").length} / {course.nodes.length} 個節點完成</p>
                   </div>
                   <button className="course-open" type="button" aria-label={"開啟" + course.prompt} onClick={() => onSelect(course.id)}>
-                    <Image src="/icons/arrow-right.svg" alt="" width={20} height={20} />
+                    <ArrowRight className="course-open-icon" aria-hidden="true" />
                   </button>
                 </article>
               ))}
