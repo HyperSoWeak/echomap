@@ -4,6 +4,7 @@ import { useEffect, useReducer, useState } from "react";
 import { CourseLibrary } from "./CourseLibrary";
 import { LearningMap } from "./LearningMap";
 import { LessonPlayer } from "./LessonPlayer";
+import { NodeDetail } from "./NodeDetail";
 import { PreQuiz } from "./PreQuiz";
 import { createInitialState, learningReducer, selectActiveCourse } from "./state";
 import { clearState, loadState, saveState } from "./storage";
@@ -50,6 +51,7 @@ export function LearningApp({ initialState }: { initialState?: AppState }) {
     );
   }
   if (state.screen === "map" && course) return <LearningMap course={course} dispatch={dispatch} />;
+  if (state.screen === "node" && course) return <NodeDetail course={course} dispatch={dispatch} />;
   if (state.screen === "lesson" && course) return <LessonPlayer course={course} dispatch={dispatch} />;
 
   return (
