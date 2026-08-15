@@ -28,6 +28,7 @@ describe("AI Agent mock content", () => {
   });
 
   it("exposes AI Agent course scripts and interruption examples", () => {
+    expect(DEMO_CONCEPT_GRAPH.nodes).toHaveLength(8);
     expect(DEMO_CONCEPT_GRAPH.nodes.map((node) => node.id)).toContain(
       "prompt-injection-risk",
     );
