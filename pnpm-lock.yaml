@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@swc/helpers':
+        specifier: 0.5.23
+        version: 0.5.23
       next:
         specifier: 16.3.1
         version: 16.3.1(@babel/core@7.29.7)(@playwright/test@1.62.1)(@types/node@24.13.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
