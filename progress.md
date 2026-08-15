@@ -25,11 +25,13 @@
 
 ### Phase 2: Domain State & Guided Flow
 
-- **Status:** in_progress
+- **Status:** complete
 - Actions taken:
   - 以 RED tests 定義多課程、五步前測、重複概念、stuck、補強節點、完成節目與 reset transitions。
   - 實作七節點固定 demo dataset、reducer、selectors 與 versioned localStorage。
   - 修正 Node 25 / Vitest jsdom storage shadowing，11 個 domain/storage tests 全部 GREEN。
+  - 讀取 Figma Home 與 Generated Map design context，宣告以 Figma 為優先的 mobile design system。
+  - 完成 mobile 課程列表、新增課程、五步前測、zigzag 學習地圖、播放器、提問筆記與補強節點 UI。
 - Files created/modified:
   - `src/features/learning/types.ts`
   - `src/features/learning/demo-data.ts`
@@ -39,20 +41,31 @@
 
 ### Phase 3: Real AI Voice Q&A
 
-- **Status:** pending
+- **Status:** complete
 - Actions taken:
+  - 建立 OpenAI server client、Zod structured output 與 30 requests/IP/10 minutes rate limit。
+  - 完成 transcription、answer、speech routes，以及 browser push-to-talk、TTS 播放與 fallback 文字回答。
 - Files created/modified:
+  - `src/lib/server/openai.ts`, `rate-limit.ts`
+  - `src/app/api/transcribe/route.ts`, `answer/route.ts`, `speech/route.ts`
 
 ### Phase 4: Deployment & Documentation
 
-- **Status:** pending
+- **Status:** complete
 - Actions taken:
+  - 建立同時支援 `pnpm dev` 與 standalone production 的 multi-stage Dockerfile。
+  - 加入 Compose、Railway health check/config、env example 與 GitHub `main` autodeploy 說明。
 - Files created/modified:
+  - `Dockerfile`, `compose.yaml`, `.dockerignore`, `.env.example`
+  - `railway.json`, `README.md`, `src/app/api/health/route.ts`
 
 ### Phase 5: Verification & Review
 
-- **Status:** pending
+- **Status:** complete
 - Actions taken:
+  - 依使用者指示略過新增/執行 automated tests 與 E2E。
+  - `pnpm lint`、`pnpm typecheck`、`pnpm build` 通過。
+  - production Docker image 建置成功；container `/api/health` 回傳 ok、首頁 HTTP 200。
 - Files created/modified:
 
 ### Phase 6: Delivery
@@ -69,6 +82,9 @@
 | TypeScript | `pnpm typecheck` | exit 0 | exit 0 | ✓ |
 | ESLint | `pnpm lint` | exit 0 | exit 0 | ✓ |
 | Domain/storage | `pnpm test:run src/features/learning/state.test.ts src/features/learning/storage.test.ts` | 11 passing tests | 11 passing tests | ✓ |
+| Latest verification | automated tests / E2E | skipped by user | skipped | — |
+| Production build | `pnpm build` | exit 0 | exit 0 | ✓ |
+| Docker smoke | health + home | ok + HTTP 200 | ok + HTTP 200 | ✓ |
 
 ## Error Log
 
@@ -81,13 +97,18 @@
 | 2026-08-15 | Storage suite: `localStorage.clear is not a function` | 1 | Root-cause investigation found Node 25 global storage shadowing the jsdom boundary |
 | 2026-08-15 | `window.localStorage.clear` remained unavailable | 2 | Vitest source showed `window` aliases the global; bind actual jsdom storage in test setup |
 | 2026-08-15 | Planning-log patches used non-matching progress context | 1–2 | Split changes and patch the exact phase block |
+| 2026-08-15 | Figma MCP call limit on detail/player nodes | 1 | Stop retries; use earlier screenshots and approved visual findings |
+| 2026-08-15 | UI `apply_patch` JavaScript interpolation syntax error | 1 | Split files into smaller patches and use string concatenation in TSX |
+| 2026-08-15 | React 19 effect/ref lint errors | 1 | Defer storage hydration and pass `isPlaying` state directly |
+| 2026-08-15 | Docker bridge veth unsupported on this host | 1 | Verify with Docker host networking |
+| 2026-08-15 | Standalone runtime missed `@swc/helpers` ESM file | 2 | Explicit runtime dependency plus output file tracing include |
 
 ## 5-Question Reboot Check
 
 | Question | Answer |
 |----------|--------|
-| Where am I? | Phase 2: Domain State & Guided Flow |
-| Where am I going? | Domain/UI, AI voice, deployment, verification, delivery |
+| Where am I? | Phase 6: Delivery |
+| Where am I going? | Commit, integrate to `main`, and hand off Railway connection |
 | What's the goal? | 可由 `main` 自動部署 Railway 的 mobile audio learning map MVP |
 | What have I learned? | See `findings.md` |
-| What have I done? | See phase logs above |
+| What have I done? | Completed UI, AI routes, Docker/Railway files, build and container smoke |

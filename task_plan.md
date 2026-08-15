@@ -6,7 +6,7 @@
 
 ## Current Phase
 
-Phase 2
+Phase 6
 
 ## Phases
 
@@ -20,31 +20,31 @@ Phase 2
 ### Phase 2: Domain State & Guided Flow
 
 - [x] 以 TDD 建立 course reducer、固定 demo dataset 與 versioned localStorage
-- [ ] 實作課程列表、新增課程與五步前測
-- [ ] 實作學習地圖、節目播放器、筆記與補救節點流程
-- **Status:** in_progress
+- [x] 實作課程列表、新增課程與五步前測
+- [x] 實作學習地圖、節目播放器、筆記與補救節點流程
+- **Status:** complete
 
 ### Phase 3: Real AI Voice Q&A
 
-- [ ] 建立 server-only OpenAI client、request validation 與 rate limit
-- [ ] 實作 `/api/transcribe`、`/api/answer`、`/api/speech`
-- [ ] 實作 push-to-talk、文字答案、TTS 串流播放與課程續播
-- **Status:** pending
+- [x] 建立 server-only OpenAI client、request validation 與 rate limit
+- [x] 實作 `/api/transcribe`、`/api/answer`、`/api/speech`
+- [x] 實作 push-to-talk、文字答案、TTS 播放與課程續播
+- **Status:** complete
 
 ### Phase 4: Deployment & Documentation
 
-- [ ] 建立 development/production multi-stage Dockerfile 與 Compose
-- [ ] 建立 Railway production 設定與 GitHub `main` autodeploy 指引
-- [ ] 補齊 `.env.example`、README 與 health endpoint
-- **Status:** pending
+- [x] 建立 development/production multi-stage Dockerfile 與 Compose
+- [x] 建立 Railway production 設定與 GitHub `main` autodeploy 指引
+- [x] 補齊 `.env.example`、README 與 health endpoint
+- **Status:** complete
 
 ### Phase 5: Verification & Review
 
-- [ ] 執行 unit、route、component、E2E、lint、typecheck 與 build
-- [ ] 以 390px browser 驗證主要 workflow 與視覺
-- [ ] 建置並 smoke-test production Docker image
-- [ ] 完成 code review、修正問題並整合回 `main`
-- **Status:** pending
+- [x] 執行 lint、typecheck 與 production build
+- [x] 依使用者指示略過新增與執行 automated tests / E2E
+- [x] 建置並 smoke-test production Docker image
+- [ ] 整合回 `main`
+- **Status:** in_progress
 
 ### Phase 6: Delivery
 
@@ -80,9 +80,14 @@ Phase 2
 | Storage tests resolved bare `localStorage` to Node 24's incomplete web-storage global | 1 | Investigate global vs jsdom window before changing the test boundary |
 | Using `window.localStorage` still resolved the Vitest global in Node 25 | 2 | Override the test global with Vitest's internal `jsdom.window.localStorage` during setup |
 | Progress patch used non-matching or overlapping context | 1–2 | Split plan and progress changes, then patch exact phase blocks |
+| Figma MCP Starter plan rate-limited detail and podcast context | 1 | Use the already inspected screenshots/spec plus complete Home/Map context; do not retry the capped call |
+| Large UI patch contained JavaScript template interpolation | 1 | Split UI changes into smaller patches and avoid nested template literals |
+| React 19 lint rejected sync hydration state and render-time ref access | 1 | Defer localStorage hydration to a microtask and pass render state directly |
+| Docker host could not create bridge veth | 1 | Use host networking for local build/smoke verification; Railway remains unaffected |
+| Next standalone omitted `@swc/helpers` ESM exports | 2 | Add the runtime dependency and explicit `outputFileTracingIncludes` pattern |
 
 ## Notes
 
 - 所有檔案修改使用 `apply_patch`。
 - 不把 API key、音訊內容或完整 prompt 寫入 log。
-- 每完成一個邏輯單位就執行對應測試並建立 Conventional Commit。
+- 依使用者最新指示略過 tests，以 lint、typecheck、build 與 container smoke check 快速驗證 demo。
