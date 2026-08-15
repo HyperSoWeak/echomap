@@ -43,15 +43,15 @@ Phase 6
 - [x] 執行 lint、typecheck 與 production build
 - [x] 依使用者指示略過新增與執行 automated tests / E2E
 - [x] 建置並 smoke-test production Docker image
-- [ ] 整合回 `main`
-- **Status:** in_progress
+- [x] 整合回 `main`
+- **Status:** complete
 
 ### Phase 6: Delivery
 
-- [ ] 稽核所有 acceptance criteria 與 git 狀態
-- [ ] 提供 Railway 一次性連線步驟與環境變數清單
-- [ ] 標記目標完成並交付
-- **Status:** pending
+- [x] 稽核所有 acceptance criteria 與 git 狀態
+- [x] 提供 Railway 一次性連線步驟與環境變數清單
+- [x] 標記目標完成並交付
+- **Status:** complete
 
 ## Key Questions
 

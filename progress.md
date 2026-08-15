@@ -70,9 +70,13 @@
 
 ### Phase 6: Delivery
 
-- **Status:** pending
+- **Status:** complete
 - Actions taken:
+  - Fast-forward feature branch 到本機 `main`，保留 branch/worktree，未執行 destructive cleanup。
+  - 稽核 acceptance criteria、git 狀態、Railway 連線說明與環境變數。
+  - Repository 尚無 remote；GitHub push 與 Railway dashboard 連線留作一次性使用者操作。
 - Files created/modified:
+  - `task_plan.md`, `progress.md`
 
 ## Test Results
 
@@ -102,6 +106,7 @@
 | 2026-08-15 | React 19 effect/ref lint errors | 1 | Defer storage hydration and pass `isPlaying` state directly |
 | 2026-08-15 | Docker bridge veth unsupported on this host | 1 | Verify with Docker host networking |
 | 2026-08-15 | Standalone runtime missed `@swc/helpers` ESM file | 2 | Explicit runtime dependency plus output file tracing include |
+| 2026-08-15 | Root lint traversed the 844MB ignored worktree | 1 | Add `.worktrees/**` to ESLint global ignores |
 
 ## 5-Question Reboot Check
 
