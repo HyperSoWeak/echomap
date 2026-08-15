@@ -43,52 +43,66 @@ export function CourseLibrary({ courses, onCreate, onSelect, onReset }: CourseLi
     <>
       <AppHeader onReset={courses.length ? onReset : undefined} />
       <section className="screen library-screen">
-        <div className="wordmark" aria-hidden="true">Learn Audio Map</div>
-        <div className="section-heading-row">
-          <div><p className="eyebrow">用聲音開始學習</p><h1>我的課程</h1></div>
-          <span className="course-count">{courses.length} 門</span>
+        <div className="home-hero">
+          <div className="wordmark" aria-label="EchoMap">EchoMap</div>
+          <p>讓 <strong>EchoMap</strong> 快速掌握你的學習方向與程度</p>
+          <button className="hero-start" type="button" onClick={() => setShowForm(true)}>
+            <span>新增課程</span><Image src="/icons/arrow-right.svg" alt="" width={18} height={18} />
+          </button>
         </div>
 
-        {courses.length === 0 ? (
-          <div className="empty-course-card">
-            <span className="empty-node" aria-hidden="true" />
-            <h2>還沒有課程</h2>
-            <p>新增一個主題，先用固定內容走完你的第一張學習地圖。</p>
-          </div>
-        ) : (
-          <div className="course-list" aria-label="課程列表">
-            {courses.map((course, index) => (
-              <article className="course-card" key={course.id}>
-                <span className="course-index">{String(index + 1).padStart(2, "0")}</span>
-                <div>
-                  <p className="course-kicker">固定 Demo 內容</p>
-                  <h2>{course.title}</h2>
-                  <p>{course.nodes.filter((node) => node.status === "learned").length} / {course.nodes.length} 個節點完成</p>
-                </div>
-                <button className="course-open" type="button" aria-label={"開啟" + course.title} onClick={() => onSelect(course.id)}>
-                  <Image src="/icons/arrow-right.svg" alt="" width={22} height={22} />
-                </button>
-              </article>
-            ))}
-          </div>
-        )}
+        <div className="home-or-divider" aria-hidden="true"><span>OR</span></div>
 
-        {showForm ? (
-          <form className="add-course-form" onSubmit={submit}>
-            <label htmlFor="course-title">課程主題</label>
-            <p className="field-help">目前任意主題都會使用同一份固定 demo 內容。</p>
-            <input id="course-title" autoFocus autoComplete="off" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="例如：自主機器人" />
-            {error ? <p className="field-error" role="alert">{error}</p> : null}
-            <div className="form-actions">
-              <button className="button-secondary" type="button" onClick={() => setShowForm(false)}>取消</button>
-              <button className="button-primary" type="submit">建立課程<Image src="/icons/arrow-right.svg" alt="" width={20} height={20} /></button>
+        <div className="discovery-heading">
+          <p>建立主題，開始你的 <strong>聲音學習地圖</strong></p>
+        </div>
+
+        <div className="discovery-card">
+          {showForm ? (
+            <form className="topic-search-form" onSubmit={submit}>
+              <label className="sr-only" htmlFor="course-title">課程主題</label>
+              <div className="search-input-shell">
+                <span className="search-icon" aria-hidden="true" />
+                <input id="course-title" autoFocus autoComplete="off" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="輸入想學的主題，例如：自主機器人" />
+                <button className="search-submit" type="submit" aria-label="建立課程">
+                  <Image src="/icons/arrow-right.svg" alt="" width={16} height={16} />
+                </button>
+              </div>
+              <p className="field-help">目前所有主題都會使用同一份固定 demo 內容。</p>
+              {error ? <p className="field-error" role="alert">{error}</p> : null}
+              <button className="text-action" type="button" onClick={() => setShowForm(false)}>取消</button>
+            </form>
+          ) : null}
+
+          <div className="section-heading-row course-section-heading">
+            <div><p className="eyebrow">Your maps</p><h1>我的課程</h1></div>
+            <span className="course-count">{courses.length} 門</span>
+          </div>
+
+          {courses.length === 0 ? (
+            <div className="empty-course-card">
+              <span className="empty-node" aria-hidden="true" />
+              <h2>還沒有課程</h2>
+              <p>新增一個主題，建立第一張學習地圖。</p>
             </div>
-          </form>
-        ) : (
-          <button className="add-course-button" type="button" onClick={() => setShowForm(true)}>
-            <Image src="/icons/plus.svg" alt="" width={26} height={26} /><span>新增課程</span>
-          </button>
-        )}
+          ) : (
+            <div className="course-list" aria-label="課程列表">
+              {courses.map((course, index) => (
+                <article className="course-card" key={course.id}>
+                  <span className="course-index">{String(index + 1).padStart(2, "0")}</span>
+                  <div>
+                    <p className="course-kicker">EchoMap Demo</p>
+                    <h2>{course.title}</h2>
+                    <p>{course.nodes.filter((node) => node.status === "learned").length} / {course.nodes.length} 個節點完成</p>
+                  </div>
+                  <button className="course-open" type="button" aria-label={"開啟" + course.title} onClick={() => onSelect(course.id)}>
+                    <Image src="/icons/arrow-right.svg" alt="" width={20} height={20} />
+                  </button>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
     </>
   );

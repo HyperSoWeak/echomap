@@ -58,14 +58,12 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
     <>
       <AppHeader backLabel="返回學習地圖" onBack={() => dispatch({ type: "navigateBack" })} />
       <section className="screen lesson-screen">
-        <p className="eyebrow">Now learning</p>
-        <h1>AI Agent</h1>
-        <p className="support-copy">理解觀察、決策、行動的循環</p>
+        <p className="prequiz-eyebrow">AI Agent / Episode 01</p>
+        <div className="lesson-heading"><p className="eyebrow">Now learning</p><h1>AI Agent</h1><p className="support-copy">理解觀察、決策、行動的循環</p></div>
 
         <article className="episode-card">
-          <span className="episode-number">EP. 01</span>
-          <h2>{DEMO_EPISODE.title}</h2>
-          <p>{DEMO_EPISODE.description}</p>
+          <span className="episode-thumb" aria-hidden="true">1</span>
+          <div><span className="episode-number">EP. 01</span><h2>{DEMO_EPISODE.title}</h2><p>{DEMO_EPISODE.description}</p></div>
         </article>
 
         <div className="player-card">
@@ -74,10 +72,11 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
           </div>
           <div className="timeline"><span style={{ width: progress + "%" }} /></div>
           <div className="player-times"><span>{formatTime(course.episodeProgressSeconds)}</span><span>{formatTime(DEMO_EPISODE.durationSeconds)}</span></div>
-          <button className="play-button" type="button" onClick={isPlaying ? pause : play}>
-            <span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
-            {isPlaying ? "暫停課程" : "播放課程"}
-          </button>
+          <div className="transport">
+            <button className="transport-button" type="button" disabled aria-label="上一段">−10</button>
+            <button className="play-button" type="button" onClick={isPlaying ? pause : play}><span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>{isPlaying ? "暫停" : "播放"}</button>
+            <button className="transport-button" type="button" disabled aria-label="下一段">+10</button>
+          </div>
           <button className="text-action" type="button" onClick={() => setShowTranscript((value) => !value)}>{showTranscript ? "收起文字稿" : "顯示文字稿"}</button>
           {showTranscript ? <p className="lesson-transcript">{DEMO_EPISODE.transcript}</p> : null}
         </div>

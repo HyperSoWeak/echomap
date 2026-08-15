@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Learn Audio Map",
+  title: "EchoMap",
   description: "用聲音建立你的個人化學習地圖",
 };
 

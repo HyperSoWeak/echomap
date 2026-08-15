@@ -7,17 +7,20 @@ interface AppHeaderProps {
 export function AppHeader({ backLabel, onBack, onReset }: AppHeaderProps) {
   return (
     <header className="app-header">
-      {onBack ? (
-        <button className="header-round-action" type="button" aria-label={backLabel ?? "返回"} onClick={onBack}>
-          <span aria-hidden="true">←</span>
-        </button>
-      ) : (
-        <span className="header-logo" aria-hidden="true" />
-      )}
-      <span className="header-brand">Learn Audio Map</span>
-      {onReset ? (
-        <button className="header-text-action" type="button" onClick={onReset}>重新 Demo</button>
-      ) : null}
+      <div className="brand-lockup">
+        <span className="brand-mark" aria-hidden="true" />
+        <span className="header-brand">EchoMap</span>
+      </div>
+      <div className="header-actions">
+        {onBack ? (
+          <button className="header-back-action" type="button" onClick={onBack}>
+            <span aria-hidden="true">←</span>{backLabel ?? "返回"}
+          </button>
+        ) : null}
+        {onReset ? (
+          <button className="header-text-action" type="button" onClick={onReset}>重新 Demo</button>
+        ) : null}
+      </div>
     </header>
   );
 }

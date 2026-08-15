@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { AppHeader } from "./AppHeader";
 import { QUIZ_STEPS } from "./demo-data";
 
@@ -17,25 +16,29 @@ export function PreQuiz({ answers, onAnswer, onBack, onExit }: PreQuizProps) {
     <>
       <AppHeader backLabel={answers.length ? "上一題" : "返回課程列表"} onBack={answers.length ? onBack : onExit} />
       <section className="screen quiz-screen">
-        <div className="quiz-progress-row">
-          <span>{index + 1} / 5</span>
-          <div className="quiz-progress" aria-label={"前測第 " + (index + 1) + " 步，共 5 步"}>
-            {QUIZ_STEPS.map((item, stepIndex) => <span key={item.id} className={stepIndex <= index ? "is-active" : ""} />)}
+        <div className="prequiz-flow">
+          <p className="prequiz-eyebrow">Pre-Quiz {index + 1}</p>
+          <div className="prequiz-card">
+            <div className="quiz-dots" aria-label={"前測第 " + (index + 1) + " 步，共 5 步"}>
+              {QUIZ_STEPS.map((item, stepIndex) => (
+                <div className={"quiz-dot-item" + (stepIndex <= index ? " done" : "")} key={item.id}>
+                  <span aria-current={stepIndex === index ? "step" : undefined}>{stepIndex + 1}</span>
+                  {stepIndex < QUIZ_STEPS.length - 1 ? <i aria-hidden="true" /> : null}
+                </div>
+              ))}
+            </div>
+            <div className="quiz-copy">
+              <p className="eyebrow">{step.eyebrow}</p>
+              <h1>{step.question}</h1>
+              <p className="support-copy">{step.description}</p>
+            </div>
+            <div className="quiz-options">
+              {step.options.map((option) => (
+                <button type="button" key={option} onClick={() => onAnswer(option)}>{option}</button>
+              ))}
+            </div>
+            {index === QUIZ_STEPS.length - 1 ? <p className="prequiz-footnote">最後一題！完成後即可生成專屬的 <strong>EchoMap</strong> 學習地圖。</p> : null}
           </div>
-        </div>
-        <div className="quiz-copy">
-          <p className="eyebrow">{step.eyebrow}</p>
-          <h1>{step.question}</h1>
-          <p className="support-copy">{step.description}</p>
-        </div>
-        <div className="quiz-options">
-          {step.options.map((option, optionIndex) => (
-            <button type="button" key={option} onClick={() => onAnswer(option)}>
-              <span className="option-index">{optionIndex + 1}</span>
-              <span>{option}</span>
-              <Image src="/icons/arrow-right.svg" alt="" width={20} height={20} />
-            </button>
-          ))}
         </div>
       </section>
     </>

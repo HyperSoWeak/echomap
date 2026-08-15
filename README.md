@@ -1,45 +1,100 @@
-# Learn Audio Map
+# EchoMap
 
-Mobile-first hackathon demo：新增多門課程、完成五步前測、查看學習地圖，並在課程中用語音向 AI 即時提問。
+EchoMap is a mobile-first, voice-driven learning platform. Learners create a course, complete a short diagnostic, follow a generated learning map, and ask questions out loud at any point during a lesson — EchoMap transcribes the question, answers it in the context of the current concept, and speaks the answer back.
 
-目前任意課程名稱都使用同一份固定 demo 內容。課程本體暫以瀏覽器 `SpeechSynthesis` 播放佔位文字；使用者提問則會呼叫 OpenAI transcription、structured answer 與 TTS API。
+## Features
 
-## Local
+- **Course library** — create and switch between multiple courses, with progress persisted locally per course.
+- **Diagnostic pre-quiz** — a five-step assessment that captures the learner's background before the map is opened.
+- **Learning map** — an ordered set of concept nodes (core, checkpoint, remedial) tracking `unlearned`, `learned`, and `stuck` states.
+- **Voice Q&A during playback** — record a question mid-lesson; EchoMap transcribes it, resolves it to the most relevant concept, and returns both a plain explanation and an example-based explanation.
+- **Spoken answers** — answers are synthesized to speech and played back, so the session stays hands-free.
+- **Adaptive remediation** — a concept asked about twice is flagged as `stuck`, and EchoMap offers to insert a remedial node into the map right after it.
+- **Question notes** — every question, its transcript, playback position, and the answer are recorded for later review.
 
-需要 Node.js 24、pnpm 11 與 OpenAI API key。
+## Architecture
+
+| Layer | Technology |
+| --- | --- |
+| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| Validation | Zod (request schemas and structured model output) |
+| AI | OpenAI transcription, structured responses, and text-to-speech |
+| Persistence | Browser `localStorage` (versioned schema) |
+| Testing | Vitest + Testing Library, Playwright |
+| Deployment | Docker, Railway |
+
+### API routes
+
+| Route | Purpose |
+| --- | --- |
+| `POST /api/transcribe` | Speech-to-text for a recorded question |
+| `POST /api/answer` | Structured, concept-scoped answer generation |
+| `POST /api/speech` | Text-to-speech for the selected answer |
+| `GET /api/health` | Health probe used by the deployment platform |
+
+All AI routes are rate limited to 30 requests per client per 10-minute window and validate their input with Zod before reaching the model.
+
+## Requirements
+
+- Node.js 24
+- pnpm 11
+- An OpenAI API key
+
+## Getting started
 
 ```bash
 cp .env.example .env.local
-# 編輯 .env.local，填入 OPENAI_API_KEY
+# set OPENAI_API_KEY in .env.local
 pnpm install
 pnpm dev
 ```
 
-開啟 <http://localhost:3000>。沒有 API key 時仍可走完主要 UI；建議問題會顯示固定 fallback 回答，但即時語音辨識與 TTS 不可用。
+The application runs at <http://localhost:3000>.
 
-## Docker development
+Without an API key the full interface remains navigable and answers fall back to canned responses, but live transcription and speech synthesis are unavailable.
+
+## Configuration
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | — | Required for transcription, answers, and speech |
+| `OPENAI_ANSWER_MODEL` | `gpt-5.6-luna` | Model used for structured answers |
+| `OPENAI_TRANSCRIBE_MODEL` | `gpt-transcribe` | Speech-to-text model |
+| `OPENAI_SPEECH_MODEL` | `gpt-4o-mini-tts` | Text-to-speech model |
+| `OPENAI_SPEECH_VOICE` | `coral` | Voice used for spoken answers |
+
+## Docker
 
 ```bash
 cp .env.example .env.local
-# 編輯 .env.local，填入 OPENAI_API_KEY
+# set OPENAI_API_KEY in .env.local
 docker compose up --build
 ```
 
-`compose.yaml` 直接執行 `pnpm dev`，程式碼變更會即時更新。
+`compose.yaml` runs the Next.js dev server with hot reload against your working tree.
 
-## Railway production
+## Deployment (Railway)
 
-1. 將 repository 推到 GitHub。
-2. 在 Railway 建立 project，選擇 **Deploy from GitHub repo**，branch 設為 `main`。
-3. 在 service variables 加入 `OPENAI_API_KEY`；其餘 model variables 可沿用 `.env.example`。
-4. 產生 public domain。
+1. Push the repository to GitHub.
+2. Create a Railway project and choose **Deploy from GitHub repo**, targeting the `main` branch.
+3. Add `OPENAI_API_KEY` to the service variables; the remaining model variables can keep the defaults from `.env.example`.
+4. Generate a public domain.
 
-Railway 會自動使用根目錄的 `Dockerfile` 與 `railway.json`。完成一次 GitHub 連結後，每次 push 到 `main` 都會自動 build、檢查 `/api/health`，再部署 production container。
+Railway builds from the root `Dockerfile` and `railway.json`. After the initial GitHub connection, every push to `main` triggers a build, a `/api/health` check, and a production deployment.
 
-## Commands
+## Scripts
 
 ```bash
-pnpm typecheck
-pnpm lint
-pnpm build
+pnpm dev         # start the development server
+pnpm build       # production build
+pnpm start       # serve the production build
+pnpm typecheck   # TypeScript, no emit
+pnpm lint        # ESLint
+pnpm test        # unit tests (watch)
+pnpm test:run    # unit tests (single run)
+pnpm test:e2e    # Playwright end-to-end tests
 ```
+
+## Current scope
+
+Course content ships as a single bundled curriculum: every course created in the library uses the same concept set, and lesson audio is rendered with the browser `SpeechSynthesis` API. Voice questions, answer generation, and spoken answers are backed by live OpenAI calls. Per-course content generation and server-side persistence are the next steps on the roadmap.
