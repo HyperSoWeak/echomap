@@ -94,21 +94,16 @@ h3 { font-size: .95rem; line-height: 1.5; }
 }
 .brand-lockup { display: flex; min-width: 0; align-items: center; gap: 12px; }
 .brand-mark {
-  position: relative;
+  display: flex;
   width: 46px;
   height: 46px;
   flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   background: var(--surface);
+  box-shadow: 0 1px 3px rgb(38 48 47 / 15%);
 }
-.brand-mark::before, .brand-mark::after {
-  position: absolute;
-  content: "";
-  border-radius: 50%;
-  background: var(--accent);
-}
-.brand-mark::before { top: 12px; left: 12px; width: 9px; height: 9px; box-shadow: 13px 13px 0 var(--accent); }
-.brand-mark::after { top: 14px; right: 11px; width: 7px; height: 7px; }
 .header-brand {
   overflow: hidden;
   font-size: 1rem;
@@ -136,7 +131,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
   margin: 0 0 18px;
   color: var(--accent);
   font-family: "Zen Tokyo Zoo", "Arial Narrow", sans-serif;
-  font-size: clamp(2.8rem, 15vw, 4.5rem);
+  font-size: clamp(2.2rem, 11vw, 3.2rem);
   font-weight: 400;
   letter-spacing: .02em;
   line-height: 1;
@@ -256,7 +251,7 @@ h3 { font-size: .95rem; line-height: 1.5; }
 .map-card { padding: 24px 20px; }
 .map-card > h1 { margin: 3px 0 3px; color: var(--accent-ink); }
 .topic-stats { display: flex; flex-wrap: wrap; gap: 8px 15px; margin: 20px 0 8px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--raise); color: var(--muted); font-size: .7rem; }
-.topic-stats b { margin-left: 3px; color: var(--accent-ink); font-size: 1.05rem; font-weight: 800; }
+.topic-stats b { margin: 0 3px; color: var(--accent-ink); font-size: 1.35rem; font-weight: 800; }
 .learning-path { position: relative; display: grid; gap: 17px; margin-top: 19px; padding: 5px 3px 15px; }
 .learning-path::before { position: absolute; top: 37px; bottom: 50px; left: 50%; width: 1px; content: ""; background: var(--line-strong); }
 .map-node { position: relative; z-index: 1; display: grid; width: 88%; min-height: 68px; grid-template-columns: 58px 1fr; align-items: center; gap: 11px; padding: 0; border: 0; background: transparent; text-align: left; }
