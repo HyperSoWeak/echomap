@@ -32,7 +32,7 @@ EchoMap is a mobile-first, voice-driven learning platform. Learners create a cou
 | `POST /api/speech` | Text-to-speech for the selected answer |
 | `GET /api/health` | Health probe used by the deployment platform |
 
-All AI routes are rate limited to 30 requests per client per 10-minute window and validate their input with Zod before reaching the model.
+All AI routes validate their input with Zod before reaching the model.
 
 ## Requirements
 

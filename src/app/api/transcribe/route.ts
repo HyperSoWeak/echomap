@@ -1,18 +1,9 @@
 import { NextResponse } from "next/server";
 import { transcribeAudio } from "@/lib/server/openai";
-import { checkRateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  const limit = checkRateLimit(request);
-  if (!limit.allowed) {
-    return NextResponse.json(
-      { error: { code: "rate_limited", message: "請稍後再試。" } },
-      { status: 429, headers: { "retry-after": String(limit.retryAfterSeconds) } },
-    );
-  }
-
   try {
     const form = await request.formData();
     const audio = form.get("audio");

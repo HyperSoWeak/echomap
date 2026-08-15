@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { synthesizeSpeech } from "@/lib/server/openai";
-import { checkRateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -10,14 +9,6 @@ const SpeechRequest = z.object({
 });
 
 export async function POST(request: Request) {
-  const limit = checkRateLimit(request);
-  if (!limit.allowed) {
-    return NextResponse.json(
-      { error: { code: "rate_limited", message: "請稍後再試。" } },
-      { status: 429, headers: { "retry-after": String(limit.retryAfterSeconds) } },
-    );
-  }
-
   try {
     const { text } = SpeechRequest.parse(await request.json());
     const speech = await synthesizeSpeech(text);
