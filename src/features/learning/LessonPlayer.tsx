@@ -18,6 +18,10 @@ function formatTime(seconds: number) {
   return Math.floor(safeSeconds / 60) + ":" + String(safeSeconds % 60).padStart(2, "0");
 }
 
+function clampProgress(seconds: number) {
+  return Math.min(Math.max(0, seconds), DEMO_EPISODE.durationSeconds);
+}
+
 export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
@@ -51,6 +55,13 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
   }
 
+  function seek(deltaSeconds: number) {
+    dispatch({
+      type: "episodeProgressed",
+      seconds: clampProgress(course.episodeProgressSeconds + deltaSeconds),
+    });
+  }
+
   const stuck = course.nodes.some((node) => node.status === "stuck");
   const progress = (course.episodeProgressSeconds / DEMO_EPISODE.durationSeconds) * 100;
 
@@ -73,9 +84,9 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
           <div className="timeline"><span style={{ width: progress + "%" }} /></div>
           <div className="player-times"><span>{formatTime(course.episodeProgressSeconds)}</span><span>{formatTime(DEMO_EPISODE.durationSeconds)}</span></div>
           <div className="transport">
-            <button className="transport-button" type="button" disabled aria-label="上一段">−10</button>
+            <button className="transport-button" type="button" aria-label="上一段" onClick={() => seek(-10)}>−10</button>
             <button className="play-button" type="button" onClick={isPlaying ? pause : play}><span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>{isPlaying ? "暫停" : "播放"}</button>
-            <button className="transport-button" type="button" disabled aria-label="下一段">+10</button>
+            <button className="transport-button" type="button" aria-label="下一段" onClick={() => seek(10)}>+10</button>
           </div>
           <button className="text-action" type="button" onClick={() => setShowTranscript((value) => !value)}>{showTranscript ? "收起文字稿" : "顯示文字稿"}</button>
           {showTranscript ? <p className="lesson-transcript">{DEMO_EPISODE.transcript}</p> : null}

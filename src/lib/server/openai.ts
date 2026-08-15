@@ -5,9 +5,22 @@ import { DEMO_CONCEPT_IDS, DEMO_EPISODE } from "@/features/learning/demo-data";
 
 const CourseAnswer = z.object({
   conceptId: z.enum(DEMO_CONCEPT_IDS),
-  plainAnswer: z.string().min(1).max(500),
-  exampleAnswer: z.string().min(1).max(500),
+  plainAnswer: z.string().min(1).max(800),
+  exampleAnswer: z.string().min(1).max(800),
 });
+
+export function buildCourseAnswerPrompt(input: {
+  transcript: string;
+  courseTitle: string;
+}) {
+  return {
+    courseTitle: input.courseTitle,
+    podcastTranscript: DEMO_EPISODE.transcript,
+    concepts: DEMO_CONCEPT_IDS,
+    answerLength: "回答請比短答稍微完整，約 180 到 260 個繁體中文字，適合語音播放。",
+    question: input.transcript,
+  };
+}
 
 function getClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -35,16 +48,11 @@ export async function createCourseAnswer(input: {
       {
         role: "system",
         content:
-          "你是繁體中文語音課程助教。只根據提供的固定課程摘要回答，語氣自然、精簡且適合口語播放。plainAnswer 直接解釋概念；exampleAnswer 必須再用一個日常具體例子解釋。兩者各不超過 120 個中文字。conceptId 必須選最相關的概念。",
+          "你是繁體中文語音課程助教。只根據提供的 podcastTranscript 回答，語氣自然、清楚且適合口語播放。plainAnswer 直接解釋概念；exampleAnswer 必須再用一個日常具體例子解釋。兩者各約 180 到 260 個繁體中文字。conceptId 必須選最相關的概念。",
       },
       {
         role: "user",
-        content: JSON.stringify({
-          courseTitle: input.courseTitle,
-          courseSummary: DEMO_EPISODE.transcript,
-          concepts: DEMO_CONCEPT_IDS,
-          question: input.transcript,
-        }),
+        content: JSON.stringify(buildCourseAnswerPrompt(input)),
       },
     ],
     text: { format: zodTextFormat(CourseAnswer, "course_answer") },

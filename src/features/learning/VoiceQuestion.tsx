@@ -44,9 +44,19 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
   const chunksRef = useRef<Blob[]>([]);
   const startedAtRef = useRef(0);
   const cutoffRef = useRef<number | null>(null);
+  const answerAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  function stopAnswerAudio() {
+    const audioPlayer = answerAudioRef.current;
+    if (!audioPlayer) return;
+    audioPlayer.pause();
+    audioPlayer.src = "";
+    answerAudioRef.current = null;
+  }
 
   async function ask(question: string, audio?: Blob, durationSeconds?: number) {
     let recognized = question;
+    stopAnswerAudio();
     pauseLesson();
     setMessage("");
     try {
@@ -101,20 +111,29 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
       };
       dispatch({ type: "questionAnswered", record });
       setPhase("speaking");
-      const speech = await fetch("/api/speech", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ text: result.selectedAnswer }),
-      });
-      if (!speech.ok) throw new Error("speech");
-      const url = URL.createObjectURL(await speech.blob());
-      const audioPlayer = new Audio(url);
-      audioPlayer.onended = () => {
-        URL.revokeObjectURL(url);
+      try {
+        const speech = await fetch("/api/speech", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ text: result.selectedAnswer }),
+        });
+        if (!speech.ok) throw new Error("speech");
+        const url = URL.createObjectURL(await speech.blob());
+        const audioPlayer = new Audio(url);
+        answerAudioRef.current = audioPlayer;
+        audioPlayer.onended = () => {
+          URL.revokeObjectURL(url);
+          answerAudioRef.current = null;
+          setPhase("idle");
+          if (wasPlaying) resumeLesson();
+        };
+        await audioPlayer.play();
+      } catch {
+        answerAudioRef.current = null;
         setPhase("idle");
+        setMessage("語音暫時無法播放，文字回答已保留。");
         if (wasPlaying) resumeLesson();
-      };
-      await audioPlayer.play();
+      }
     } catch (error) {
       setPhase("error");
       if (error instanceof Error && error.message === "speech") {
@@ -126,7 +145,7 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
   }
 
   async function startRecording() {
-    if (phase !== "idle" && phase !== "error") return;
+    if (phase === "recording" || phase === "transcribing" || phase === "answering") return;
     pauseLesson();
     setTranscript("");
     setAnswer("");
@@ -182,7 +201,7 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
       <div className="suggested-questions">
         <p>也可以選一個問題</p>
         {SUGGESTED_QUESTIONS.map((question) => (
-          <button type="button" key={question} disabled={phase === "answering" || phase === "speaking" || phase === "transcribing"} onClick={() => void ask(question)}>{question}</button>
+          <button type="button" key={question} disabled={phase === "answering" || phase === "transcribing"} onClick={() => void ask(question)}>{question}</button>
         ))}
       </div>
       {phase === "error" && answer ? <button className="text-action" type="button" onClick={() => { setPhase("idle"); if (wasPlaying) resumeLesson(); }}>繼續播放</button> : null}
