@@ -1,4 +1,4 @@
-import { type Dispatch, useEffect, useState } from "react";
+import { type Dispatch, useEffect, useRef, useState } from "react";
 import { AppHeader } from "./AppHeader";
 import { DEMO_EPISODE } from "./demo-data";
 import { QuestionNotes } from "./QuestionNotes";
@@ -18,52 +18,68 @@ function formatTime(seconds: number) {
   return Math.floor(safeSeconds / 60) + ":" + String(safeSeconds % 60).padStart(2, "0");
 }
 
-function clampProgress(seconds: number) {
-  return Math.min(Math.max(0, seconds), DEMO_EPISODE.durationSeconds);
+function clampProgress(seconds: number, durationSeconds: number) {
+  return Math.min(Math.max(0, seconds), durationSeconds);
 }
 
 export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [durationSeconds, setDurationSeconds] = useState<number>(DEMO_EPISODE.durationSeconds);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
 
   useEffect(() => {
-    if (!isPlaying) return;
-    const timer = window.setInterval(() => {
-      const next = Math.min(course.episodeProgressSeconds + 1, DEMO_EPISODE.durationSeconds);
-      dispatch({ type: "episodeProgressed", seconds: next });
-      if (next >= DEMO_EPISODE.durationSeconds) {
-        setIsPlaying(false);
-        dispatch({ type: "episodeCompleted" });
-      }
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, [course.episodeProgressSeconds, dispatch, isPlaying]);
+    const audio = audioRef.current;
+    if (!audio || isPlaying) return;
+    if (Math.abs(audio.currentTime - course.episodeProgressSeconds) > 0.5) {
+      audio.currentTime = course.episodeProgressSeconds;
+    }
+  }, [course.episodeProgressSeconds, isPlaying]);
 
   function play() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = course.episodeProgressSeconds;
     setIsPlaying(true);
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(DEMO_EPISODE.transcript);
-      utterance.lang = "zh-TW";
-      utterance.rate = 0.92;
-      window.speechSynthesis.speak(utterance);
-    }
+    void audio.play().catch(() => setIsPlaying(false));
   }
 
   function pause() {
     setIsPlaying(false);
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    audioRef.current?.pause();
   }
 
   function seek(deltaSeconds: number) {
+    const seconds = clampProgress(course.episodeProgressSeconds + deltaSeconds, durationSeconds);
+    if (audioRef.current) audioRef.current.currentTime = seconds;
     dispatch({
       type: "episodeProgressed",
-      seconds: clampProgress(course.episodeProgressSeconds + deltaSeconds),
+      seconds,
     });
   }
 
+  function progressAudio() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    dispatch({
+      type: "episodeProgressed",
+      seconds: Math.floor(clampProgress(audio.currentTime, durationSeconds)),
+    });
+  }
+
+  function loadAudioMetadata() {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(audio.duration)) return;
+    setDurationSeconds(Math.floor(audio.duration));
+  }
+
+  function completeAudio() {
+    setIsPlaying(false);
+    dispatch({ type: "episodeCompleted" });
+  }
+
   const stuck = course.nodes.some((node) => node.status === "stuck");
-  const progress = (course.episodeProgressSeconds / DEMO_EPISODE.durationSeconds) * 100;
+  const progress = (course.episodeProgressSeconds / durationSeconds) * 100;
 
   return (
     <>
@@ -78,11 +94,20 @@ export function LessonPlayer({ course, dispatch }: LessonPlayerProps) {
         </article>
 
         <div className="player-card">
+          <audio
+            ref={audioRef}
+            aria-label="課程音檔"
+            preload="metadata"
+            src={DEMO_EPISODE.audioSrc}
+            onLoadedMetadata={loadAudioMetadata}
+            onTimeUpdate={progressAudio}
+            onEnded={completeAudio}
+          />
           <div className="waveform" aria-label="課程音訊波形">
             {bars.map((height, index) => <span key={index} className={index / bars.length * 100 <= progress ? "played" : ""} style={{ height }} />)}
           </div>
           <div className="timeline"><span style={{ width: progress + "%" }} /></div>
-          <div className="player-times"><span>{formatTime(course.episodeProgressSeconds)}</span><span>{formatTime(DEMO_EPISODE.durationSeconds)}</span></div>
+          <div className="player-times"><span>{formatTime(course.episodeProgressSeconds)}</span><span>{formatTime(durationSeconds)}</span></div>
           <div className="transport">
             <button className="transport-button" type="button" aria-label="上一段" onClick={() => seek(-10)}>−10</button>
             <button className="play-button" type="button" onClick={isPlaying ? pause : play}><span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>{isPlaying ? "暫停" : "播放"}</button>
