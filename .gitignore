@@ -9,3 +9,5 @@ playwright-report/
 test-results/
 *.tsbuildinfo
 *.log
+AGENTS.md
+CLAUDE.md
