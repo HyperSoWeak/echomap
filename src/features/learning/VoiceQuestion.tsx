@@ -48,7 +48,9 @@ export function VoiceQuestion({ course, dispatch, playbackPosition, wasPlaying, 
       if (audio) {
         setPhase("transcribing");
         const form = new FormData();
-        form.set("audio", audio, "question.webm");
+        // Transcription picks its decoder from the extension, and iOS Safari records audio/mp4 rather than webm.
+        const extension = audio.type.split(";")[0].split("/")[1] || "webm";
+        form.set("audio", audio, `question.${extension}`);
         form.set("durationSeconds", String(durationSeconds ?? 0));
         const response = await fetch("/api/transcribe", { method: "POST", body: form });
         if (!response.ok) throw new Error("transcription");
