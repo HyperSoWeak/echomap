@@ -106,6 +106,9 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
         : state;
     }
 
+    case "nodeOpened":
+      return selectActiveCourse(state) ? { ...state, screen: "node" } : state;
+
     case "lessonOpened":
       return selectActiveCourse(state) ? { ...state, screen: "lesson" } : state;
 
@@ -160,6 +163,9 @@ export function learningReducer(state: AppState, action: AppAction): AppState {
 
     case "navigateBack":
       if (state.screen === "lesson") {
+        return { ...state, screen: "map" };
+      }
+      if (state.screen === "node") {
         return { ...state, screen: "map" };
       }
       if (state.screen === "map" || state.screen === "followUp") {

@@ -1,4 +1,4 @@
-export type Screen = "library" | "followUp" | "map" | "lesson";
+export type Screen = "library" | "followUp" | "map" | "node" | "lesson";
 
 export type NodeStatus = "unlearned" | "learned" | "stuck";
 
@@ -54,6 +54,7 @@ export type AppAction =
   | { type: "followUpAnswered"; value: string }
   | { type: "followUpBack" }
   | { type: "followUpCompleted" }
+  | { type: "nodeOpened" }
   | { type: "lessonOpened" }
   | { type: "episodeProgressed"; seconds: number }
   | { type: "questionAnswered"; record: QuestionRecord }
@@ -68,4 +69,27 @@ export interface FollowUpQuestion {
   question: string;
   description: string;
   options: string[];
+}
+
+export type ConceptNodeStatus = "root" | "learned" | "current" | "locked";
+
+export interface ConceptGraphNode {
+  id: string;
+  title: string;
+  status: ConceptNodeStatus;
+  x: number;
+  y: number;
+}
+
+export interface ConceptGraph {
+  nodes: ConceptGraphNode[];
+  edges: [string, string][];
+}
+
+export interface EpisodePreview {
+  id: string;
+  title: string;
+  description: string;
+  durationMinutes: number;
+  completed: boolean;
 }

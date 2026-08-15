@@ -26,8 +26,9 @@ export function LearningMap({ course, dispatch }: { course: Course; dispatch: Di
                   type="button"
                   key={node.id}
                   className={"map-node map-node-" + node.status + (node.kind === "remedial" ? " map-node-remedial" : "")}
+                  data-concept={node.conceptId}
                   aria-label={node.title + " 節點，" + labels[node.status]}
-                  onClick={() => node.conceptId === "agent-loop" ? dispatch({ type: "lessonOpened" }) : undefined}
+                  onClick={() => node.conceptId === "agent-loop" ? dispatch({ type: "nodeOpened" }) : undefined}
                 >
                   <span className="map-node-circle" aria-hidden="true" />
                   <span className="map-node-copy"><strong>{node.title}</strong><small>{node.kind === "remedial" ? "新增補強" : labels[node.status]}</small></span>
