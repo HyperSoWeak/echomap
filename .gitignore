@@ -2,6 +2,7 @@
 .env.local
 .next/
 .superpowers/
+.worktrees/
 node_modules/
 coverage/
 playwright-report/
